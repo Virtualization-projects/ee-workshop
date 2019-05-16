@@ -20,6 +20,9 @@ In this lab we'll use a Docker Enterprise cluster. You will have an environment 
 >   * [Task 1.1: Accessing PWD](#task1.1)
 >   * [Task 1.2: Install a Windows worker node](#task1.2)
 >   * [Task 1.3: Create Three Repositories](#task1.3)
+>   * **Note:** If you are also running the optional [Docker Desktop Enterprise  exercises](DESKTOP.md), you can complete Tasks 4 and later after you have completed Task 1 above. 
+>      * Tasks 2-4 below are optional since you will push an app to DTR and UCP from the desktop. 
+>      * **Task 5 below should still be completed.**
 > * [Task 2: Deploy a Java Web App](#task2)
 >   * [Task 2.1: Clone the Demo Repo](#task2.1)
 >   * [Task 2.2: Build and Push the Linux Web App Image](#task2.2)
