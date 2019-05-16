@@ -1,8 +1,8 @@
-# Deploying Multi-OS applications with Docker EE
+# Deploying Multi-OS applications with Docker Enterprise
 
-Docker EE 2.0 is the first Containers-as-a-Service platform to offer production-level support for the integrated management and security of both Linux and Windows Server Containers. It is also the first platform to support both Docker Swarm and Kubernetes orchestration.
+Docker Enterprise 3.0 is the first Containers-as-a-Service platform to offer production-level support for the integrated management and security of both Linux and Windows Server Containers. It is also the first platform to support both Docker Swarm and Kubernetes orchestration.
 
-In this lab we'll use a Docker EE cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
+In this lab we'll use a Docker Enterprise cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
 
 > **Difficulty**: Intermediate (assumes basic familiarity with Docker) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
 
@@ -16,7 +16,7 @@ In this lab we'll use a Docker EE cluster. You will have an environment that is 
 
 > **Tasks**:
 
-> * [Task 1: Configure the Docker EE Cluster](#task1)
+> * [Task 1: Configure the Docker Enterprise Cluster](#task1)
 >   * [Task 1.1: Accessing PWD](#task1.1)
 >   * [Task 1.2: Install a Windows worker node](#task1.2)
 >   * [Task 1.3: Create Three Repositories](#task1.3)
@@ -47,11 +47,11 @@ If none of these apply to you, contact your local [Docker Meetup Chapter](https:
 There are three main components to the Play With Docker (PWD) interface. 
 
 ### 1. Console Access
-Play with Docker provides access to the 4 Docker EE hosts in your Cluster. These machines are:
+Play with Docker provides access to the 4 Docker Enterprise hosts in your Cluster. These machines are:
 
-* A Linux-based Docker EE 18.01 Manager node
-* Three Linux-based Docker EE 18.01 Worker nodes
-* A Windows Server 2016-based Docker EE 17.06 Worker Node
+* A Linux-based Docker Enterprise 19.XX Manager node
+* Three Linux-based Docker Enterprise 19.XX Worker nodes
+* A Windows Server 2019-based Docker Enterprise XX.XX Worker Node
 
 > In some cases, your workshop organizer will have requested a Linux only environment. In that case, just skip the Windows sections of the workshop.
 
@@ -82,23 +82,23 @@ Throughout the lab you will be asked to provide either hostnames or login creden
     ![](./images/windows75.png)
 
 ## <a name="intro1"></a>Introduction
-Docker EE provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and Cloud providers. Docker EE is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker EE with cooperative support from Docker and the Certified Technology Partner.
+Docker Enterprise provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and cloud providers. Docker Enterprise is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker Enterprise with cooperative support from Docker and the Certified Technology Partner.
 
 ### <a name="intro2"></a>Overview of Orchestration
-While it is easy to run an application in isolation on a single machine, orchestration allows you to coordinate multiple machines to manage an application, with features like replication, encryption, loadbalancing, service discovery and more. If you've read anything about Docker, you have probably heard of Kubernetes and Docker swarm mode. Docker EE allows you to use either Docker swarm mode or Kubernetes for orchestration. 
+While it is easy to run an application in isolation on a single machine, orchestration allows you to coordinate multiple machines to manage an application, with features like replication, encryption, load-balancing, service discovery and more. If you've read anything about Docker, you have probably heard of Kubernetes and Docker Swarm mode. Docker Enterprise allows you to use either Docker Swarm mode or Kubernetes for orchestration. 
 
-Both Docker swarm mode and Kubernetes are declarative: you declare your cluster's desired state, and applications you want to run and where, networks, and resources they can use. Docker EE simplifies this by taking common concepts and moving them to the a shared resource.
+Both Docker Swarm mode and Kubernetes are declarative: you declare your cluster's desired state, and applications you want to run and where, networks, and resources they can use. Docker Enterprise simplifies this by taking common concepts and moving them to the a shared resource.
 
 #### <a name="intro2.1"></a>Overview of Docker Swarm mode
-A swarm is a group of machines that are running Docker and joined into a cluster. After that has happened, you continue to run the Docker commands you’re used to, but now they are executed on a cluster by a swarm manager. The machines in a swarm can be physical or virtual. After joining a swarm, they are referred to as nodes.
+A Swarm is a group of machines that are running Docker and joined into a cluster. After that has happened, you continue to run the Docker commands you’re used to, but now they are executed on a cluster by a Swarm manager. The machines in a Swarm can be physical or virtual. After joining a Swarm, they are referred to as nodes.
 
-Swarm mode uses managers and workers to run your applications. Managers run the swarm cluster, making sure nodes can communicate with each other, allocate applications to different nodes, and handle a variety of other tasks in the cluster. Workers are there to provide extra capacity to your applications. In this workshop, you have one manager and three workers.
+Swarm mode uses managers and workers to run your applications. Managers run the Swarm cluster, making sure nodes can communicate with each other, allocate applications to different nodes, and handle a variety of other tasks in the cluster. Workers are there to provide extra capacity to your applications. In this workshop, you have one manager and three workers.
 
 #### <a name="intro2.2"></a>Overview of Kubernetes
 
-Kubernetes is available in Docker EE 2.0 and included in this workshop. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many component types. UCP simplifies a lot of that, relying on Docker Swarm to handle shared resources. We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 2.0.
+Kubernetes is available in Docker Enterprise 3.0 and included in this workshop. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many component types. UCP simplifies a lot of that, relying on Docker Swarm to handle shared resources. We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 2.XX.
 
-## <a name="task1"></a>Task 1: Configure the Docker EE Cluster
+## <a name="task1"></a>Task 1: Configure the Docker Enterprise Cluster
 
 The Play with Docker (PWD) environment is almost completely set up, but before we can begin the labs, we need to do two more steps. First we'll add a Windows node to the cluster. We've left the node unjoined so you can see how easy it is to do. Then we'll create two repositories in Docker Trusted Registry.
 (The Linux worker nodes are already added to the cluster)
@@ -117,7 +117,7 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 1. From the main PWD screen click the `UCP` button on the left side of the screen
 
-	> **Note**: Because this is a lab-based install of Docker EE we are using the default self-signed certs. Because of this your browser may display a security warning. It is safe to click through this warning.
+	> **Note**: Because this is a lab-based install of Docker Enterprise we are using the default self-signed certs. Because of this your browser may display a security warning. It is safe to click through this warning.
 	>
 	> In a production environment you would use certs from a trusted certificate authority and would not see this screen.
 	>
@@ -145,11 +145,11 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	![](./images/windows75.png)
 
-5. Switch back to the PWD interface, and click the name of your Windows node. This will connect the web-based console to your Windows Server 2016 Docker EE host.
+5. Switch back to the PWD interface, and click the name of your Windows node. This will connect the web-based console to your Windows Server 2016 Docker Enterprise host.
 
 6. Paste the text from Step 4 at the command prompt in the Windows console. (depending on your browser, this can be tricky: try the "paste" command from the edit menu instead of right clicking or using keyboard shortcuts)
 
-	You should see the message `This node joined a swarm as a worker.` indicating you've successfully joined the node to the cluster.
+	You should see the message `This node joined a Swarm as a worker.` indicating you've successfully joined the node to the cluster.
 
 7. Switch back to the UCP server in your web browser and click the `x` in the upper right corner to close the `Add Node` window
 
@@ -459,7 +459,7 @@ You can do that right in the edit box in `UCP` but wanted to make sure you saw t
 
 ## <a name="task3"></a>Task 3: Deploy the next version with a Windows node
 
-Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker EE, we are going to do it in a Windows container.
+Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker Enterprise, we are going to do it in a Windows container.
 
 > If your workshop organizer requested a Windows only environment, you can skip to <a href="#task4">Task 4</a>.
 
@@ -620,18 +620,18 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 
 ## <a name="task4"></a>Task 4: Deploy to Kubernetes
 
-Now that we have built, deployed and scaled a multi OS application to Docker EE using Swarm mode for orchestration, let's learn how to use Docker EE with Kubernetes.
+Now that we have built, deployed and scaled a multi OS application to Docker Enterprise using Swarm mode for orchestration, let's learn how to use Docker Enterprise with Kubernetes.
 
-Docker EE lets you choose the orchestrator to use to deploy and manage your application, between Swarm and Kubernetes. In the previous tasks we have used Swarm for orchestration. In this section we will deploy the application to Kubernetes and see how Docker EE exposes Kubernetes concepts.
+Docker Enterprise lets you choose the orchestrator to use to deploy and manage your application, between Swarm and Kubernetes. In the previous tasks we have used Swarm for orchestration. In this section we will deploy the application to Kubernetes and see how Docker Enterprise exposes Kubernetes concepts.
 
-Before moving forward we need to make sure that our cluster worker nodes can schedule kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to swarm. 
+Before moving forward we need to make sure that our cluster worker nodes can schedule kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
 ![](./images/node_types.png)
 
 Click on the `worker2` node and change it's orchestration type to `mixed` using the gear icon on the top right corner. Repeat the same step for `worker3`.
 ![](./images/node_mixed.png)
 
 
-Now your cluster is configured to run both kuberentes and swarm workloads
+Now your cluster is configured to run both kuberentes and Swarm workloads
 
 
 ### <a name="task4.1"></a>Task 4.1: Build .NET Core app instead of .NET
@@ -707,11 +707,11 @@ For now Kubernetes does not support Windows workloads in production, so we will 
 ### <a name="task4.2"></a>Task 4.2: Examine the Docker Compose File
 ![](./images/linux75.png)
 
-Docker EE lets you deploy native Kubernetes applications using Kubernetes deployment descriptors, by pasting the yaml files in the UI, or using the `kubectl` CLI tool.
+Docker Enterprise lets you deploy native Kubernetes applications using Kubernetes deployment descriptors, by pasting the yaml files in the UI, or using the `kubectl` CLI tool.
 
 However many developers use `docker-compose` to build and test their application, and having to create Kubernetes deployment descriptors as well as maintaining them in sync with the Docker Compose file is tedious and error prone.
 
-In order to make life easier for developers and operations, Docker EE lets you deploy an application defined with a Docker Compose file as a Kubernetes workloads. Internally Docker EE uses the official Kubernetes extension mechanism by defining a [Custom Resource Definition](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/) (CRD) defining a stack object. When you post a Docker Compose stack definition to Kubernetes in Docker EE, the CRD controller takes the stack definition and translates it to Kubernetes native resources like pods, controllers and services.
+In order to make life easier for developers and operations, Docker Enterprise lets you deploy an application defined with a Docker Compose file as a Kubernetes workloads. Internally Docker Enterprise uses the official Kubernetes extension mechanism by defining a [Custom Resource Definition](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/) (CRD) defining a stack object. When you post a Docker Compose stack definition to Kubernetes in Docker Enterprise, the CRD controller takes the stack definition and translates it to Kubernetes native resources like pods, controllers and services.
 
 We'll use a Docker Compose file to instantiate our application, and it's the same file as before, except that we will switch the .NET Docker Windows image with the .NET Core Docker Linux image we just built. One other change we have to make is to create a new secret `mysql-secret` with `DockerCon!!!` as the password. Follow the instructions above but use `-` instead of `_` because Kubernetes doesn't allow underscores.
 
@@ -819,7 +819,7 @@ The `Node Port` 32770 is exposed. Note this is different than previous implement
 
 ## <a name="task5"></a>Task 5: Security Scanning
 
-Security is crucial for all organizations. And it is a complicated topic, too indepth to go through in detail here. We're going to look at just one of the features that Docker EE has to help you build a secure software supply chain: Security Scanning.
+Security is crucial for all organizations. And it is a complicated topic, too indepth to go through in detail here. We're going to look at just one of the features that Docker Enterprise has to help you build a secure software supply chain: Security Scanning.
 
 1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and `Online`.
 
@@ -851,6 +851,6 @@ Security is crucial for all organizations. And it is a complicated topic, too in
 
 ## Conclusion
 
-In this lab we've looked how Docker EE can help you manage both Linux and Windows workloads whether they be traditional apps you've modernized or newer cloud-native apps, leveraging Swarm or Kubernetes for orchestration.
+In this lab we've looked how Docker Enterprise can help you manage both Linux and Windows workloads whether they be traditional apps you've modernized or newer cloud-native apps, leveraging Swarm or Kubernetes for orchestration.
 
-You can find more information on Docker EE at [http://www.docker.com](http://www.docker.com/enterprise-edition) as well as continue exploring using our hosted trial at [https://dockertrial.com](https://dockertrial.com)
+You can find more information on Docker Enterprise at [http://www.docker.com](http://www.docker.com/enterprise-edition) as well as continue exploring using our hosted trial at [https://dockertrial.com](https://dockertrial.com)
