@@ -133,13 +133,13 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 	> ![](./images/red_warning.png)
 
 
-3. From the main dashboard screen, navigate to `Shared Resources-> Nodes`. Click `Add a Node` on the upper right of the screen
+3. From the main dashboard screen, click `Add a Node` on the bottom left of the screen
 
 	![](./images/add_a_node.png)
 
-4. Select node type "Windows", check the box, that you followed the instructions and copy the text from the dark box shown on the `Add Node` screen. Don't select a custom listen or advertise address.
+4. Select node type "Windows", Under the Step 2 section check the box `I have followed the instructions and I'm ready to join my windows node.` Next, copy the text from the `docker swarm join` command from the dark box shown on the `Add Node` screen. Don't select a custom listen or advertise address.
 
-	> **Note** There is an icon in the upper right corner of the box that you can click to copy the text to your clipboard
+	> **Note** There is an icon in the upper right corner of the dark box that you can click to copy the text to your clipboard.
 
 	> ![](./images/join_text.png)
 
@@ -154,6 +154,8 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	You should see the message `This node joined a Swarm as a worker.` indicating you've successfully joined the node to the cluster.
 
+	**Note** If the command failed, ensure that the command was correctly pasted into the Windows console.
+
 7. Switch back to the UCP server in your web browser and click the `x` in the upper right corner to close the `Add Node` window
 
 8. You will be taken back to the UCP Dashboard. In the left menu bar, click Shared Resources, and select Nodes.
@@ -162,7 +164,7 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	You should be taken to the `Nodes` screen and will see 4 worker nodes listed at the bottom of your screen.
 
-	Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `healthy`
+	Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `Healthy UCP worker`
 	
 	![](./images/node_listing.png)
 
@@ -170,15 +172,15 @@ Congratulations on adding a Windows node to your UCP cluster. Now you are ready 
 
 ### <a name="task1.3"></a>Task 1.3: Create Three DTR Repositories
 
-Docker Trusted Registry is a special server designed to store and manage your Docker images. In this lab we're going to create three different Docker images, and push them to DTR. But before we can do that, we need to setup repositories in which those images will reside. Often that would be enough.
+Docker Trusted Registry (DTR) is a special service designed to store and manage your Docker images. In this lab we're going to create three different Docker images, and push them to DTR. Before we can do that, we need to setup repositories in which those images will reside.
 
 However, before we create the repositories, we do want to restrict access to them. Since we have two distinct app components, a Java web app (with a database), and a .NET API, we want to restrict access to them to the team that develops them, as well as the administrators. To do that, we need to create two users and then two organizations.
 
-1. In the PWD web interface click the `DTR` button on the left side of the screen.
+1. In the PWD web interface, click the `DTR` button on the left side of the screen.
 
 	> **Note**: As with UCP before, DTR is also using self-signed certs. It's safe to click through any browser warning you might encounter.
 
-2. From the main DTR page, click users and then the New User button.
+2. **FIX SCREENSHOT** From the main DTR page, click users and then the New User button.
 
 	![](./images/user_screen.png)
 
@@ -188,86 +190,87 @@ However, before we create the repositories, we do want to restrict access to the
 
 	Then do the same for a `dotnet_user`.
 
-4. Select the Organization button.
+4. In the left Menu, select Organizations
 
 	![](./images/organization_screen.png)
 
-5. Press New organization button, name it java, and click save.
+5. Press the `New organization` button, name it java, and click save.
 
-	![](./images/java_organization_new.png)
+    ![](./images/java_organization_new.png)
 
 	Then do the same with dotnet and you'll have two organizations.
 
 	![](./images/two_organizations.png)
 
-6. Now you get to add a repository! Click on the java organization, select repositories and then Add repository
+6. Now you get to add a repository! Click on the java organization, select Repositories and then `New repository`
 
 	![](./images/add_repository_java.png)
 
-7. Name the repository `java_web`. 
+7. Name the repository `java_web`, provide a Description and click `Save`.
 
 	![](./images/create_repository.png)
 
 	> Note the repository is listed as "Public" but that means it is publicly viewable by users of DTR. It is not available to the general public.
 
-8. Now it's time to create a team so you can restrict access to who administers the images. Select the `java` organization and the members will show up. Press Add user and start typing in java. Select the `java_user` when it comes up.
+8. Now it's time to create a team so you can restrict access to who administers the images. Select the Members Menu Tab and Press `Add user` button. Start typing in java in the Search by Username box.. Select the `java_user` when it comes up.
 
 	![](./images/add_java_user_to_organization.png)
 
-9. Next select the `java` organization and press the `Team` button to create a `web` team.
+9. Next select the `java` organization and press the Teams Green `+` button to create a `web` team.
 
 	![](./images/team.png)
 
-10. Add the `java_user` user to the `web` team and click save.
+10. Select the `web` Team and click the `Add user` button. Add the `java_user` user to the `web` team and click save.
 
 	![](./images/team_add_user.png)
 
 	![](./images/team_with_user.png)
 
-11. Next select the `web` team and select the `Repositories` tab. Select `Add Existing repository` and choose the `java_web`repository. You'll see the `java` account is already selected. Then select `Read/Write` permissions so the `web` team has permissions to push images to this repository. Finally click `save`.
+11. Next select the `web` team and select the `Repositories` tab and click `New repository`. Select `Add Existing repository` and click in the `Repository Name` field and choose the `java_web`repository. You'll see the `java` account is already selected. Then select `Read/Write` permissions so the `web` team has permissions to push images to this repository. Finally click `Save`.
 
 	![](./images/add_java_web_to_team.png)
 
-12. Now add a new repository also owned by the web team and call it `database`. This can be done directly from the web team's `Repositories` tab by selecting the radio button for Add `New` Repository. Be sure to grant `Read/Write` permissions for this repository to the `web` team as well.
+12. Now add a `New` repository also owned by the web team and call it `database`. This can be done directly from the web team's `Repositories` tab by clicking the `New repository` button, select Add `New`repository and name the repository `database`. Be sure to grant `Read/Write` permissions for this repository which will be part of the `web` team as well.
 
 	![](./images/add_repository_database.png)
 
-13. Repeat 4-11 above to create a `dotnet` organization with a repository called `dotnet_api`, the `dotnet_user`, and a team named `api` (with `dotnet_user` as a member). Grant `read/write` permissions for the `dotnet_api` repository to the `api` team.
+13. Repeat 4-11 above to create the same structure in the `dotnet` organization. First, create the `api` Team, add the `dotnet_user` as member to to the `api`Team and create the repository `dotnet_api`. Grant `read/write` permissions for the `dotnet_api` repository to the `api` team.
 
 14. From the main DTR page, click Repositories, you will now see all three repositories listed.
 	
 	![](./images/three_repositories.png)
 
-15. (optional) If you want to check out security scanning in Task 5, you should turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and `Online`.
+15. (optional) If you want to check out security scanning in Task 5, you should turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` method for installation and updates is `Online` and click `Enable Online Syncing`
 
 	![](./images/scanning-activate.png)
 
 Congratulations, you have created three new repositories in two new organizations, each with one team and a user each.
 
 ## <a name="task2"></a>Task 2: Deploy a Java Web App with Universal Control Plane
+
 Now that we've completely configured our cluster, let's deploy a web app. The Signup application is a basic Java CRUD (Create, Read, Update, Delete) application that uses Spring and Hibernate to transact queries against MySQL. It runs in Tomcat.
 
 ### <a name="task2.1"></a> Task 2.1: Clone the Demo Repo
 
 ![](./images/linux75.png)
 
-1. From PWD click on the `worker1` link on the left to connnect your web console to the UCP Linux worker node.
+1. From PWD click on the `worker1` link on the left to connect your web console to the UCP Linux worker node. Click the terminal window and hit the enter or space key to activate the terminal window.
 
-2. Before we do anything, let's configure an environment variable for the DTR URL/DTR hostname. You may remember that the session information from the Play with Docker landing page. Select and copy the the URL for the DTR hostname.
+2. Before we do anything, let's configure an environment variable for the DTR URL/DTR hostname. You may remember that the session information from the Play with Docker landing page (Below the terminal window). Select and copy the URL for the DTR hostname.
 
 	![](./images/session-information.png)
 
 3. Set an environment variable `DTR_HOST` using the DTR host name defined on your Play with Docker landing page:
 
 	```bash
-	$ export DTR_HOST=<dtr hostname>
-	$ echo $DTR_HOST
+	  export DTR_HOST=<dtr hostname>
+	  echo $DTR_HOST
 	```
 
 4. Now use git to clone the workshop repository.
 
 	```bash
-	$ git clone https://github.com/dockersamples/hybrid-app.git
+	   git clone https://github.com/dockersamples/hybrid-app.git
 	```
 
 	You should see something like this as the output:
@@ -291,17 +294,17 @@ Now that we've completely configured our cluster, let's deploy a web app. The Si
 1. Change into the `java-app` directory.
 
 	```bash
-	$ cd ./hybrid-app/java-app/
+	  cd ./hybrid-app/java-app/
 	```
 
 2. Use `docker build` to build your Docker image.
 
 	```Bash
-	$ docker build -t $DTR_HOST/java/java_web .
+	  docker build -t $DTR_HOST/java/java_web .
 	```
 > Note the final "." in the above command. The "." is the build context, specifically the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
 
-The `-t` tags the image with a name. In our case, the name indicates which DTR server and under which organization's respository the image will live.
+The `-t` tags the image with a tag or name. In our case, the name indicates which DTR server and under which organization's repository the image will reside.
 
 > **Note**: Feel free to examine the Dockerfile in this directory if you'd like to see how the image is being built.
 
@@ -309,10 +312,11 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 3. Log into your DTR server from the command line.
  
-	First use the `dotnet_user`, which isn't part of the java organization
+	First use the `dotnet_user` and password `user1234` which isn't part of the java organization
 
 	```bash
-	$ docker login $DTR_HOST
+	docker login $DTR_HOST
+
 	Username: <your username>
 	Password: <your password>
 	Login Succeeded
@@ -321,11 +325,12 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 	Use `docker push` to upload your image up to Docker Trusted Registry.
 	
 	```bash
-	$ docker push $DTR_HOST/java/java_web
+	docker push $DTR_HOST/java/java_web
 	```
 	
 	```bash
-	$ docker push $DTR_HOST/java/java_web
+	docker push $DTR_HOST/java/java_web
+
 	The push refers to a repository [.<dtr hostname>/java/java_web]
 	8cb6044fd4d7: Preparing
 	07344436fe27: Preparing
@@ -336,10 +341,10 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 	As you can see, the access control that you established in the [Task 1.3](#task1.3) prevented you from pushing to this repository.	
 
-4. Now try logging in using `java_user`, and then use `docker push` to upload your image up to Docker Trusted Registry.
+4. Now try logging in using `java_user`and password `user1234` then use `docker push` to upload your image up to Docker Trusted Registry.
 
 	```bash
-	$ docker push $DTR_HOST/java/java_web
+	docker push $DTR_HOST/java/java_web
 	```
 
 	The output should be similar to the following:
@@ -356,7 +361,7 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 	Success! Because you are using a user name that belongs to the right team in the right organization, you can push your image to DTR.
 
-5. In your web browser head back to your DTR server and click `View Details` next to your `java_web` repo to see the details of the repo.
+5. In your web browser head back to DTR and click `View Details` next to your `java_web` repository to see the details of the repository.
 
 	> **Note**: If you've closed the tab with your DTR server, just click the `DTR` button from the PWD page.
 
@@ -366,24 +371,23 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 7. Next, build the MySQL database image. Change into the database directory.
 
-```bash
-	$ cd ../database
-```
+	```bash
+	cd ../database
+	```
 
 8. Use `docker build` to build your Docker image.
 
 	```bash
-	$ docker build -t $DTR_HOST/java/database .
+	docker build -t $DTR_HOST/java/database .
 	```
 > Note the final "." in the above command. The "." is the build context, specifically the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
 
 9. Use `docker push` to upload your image up to Docker Trusted Registry.
 	```bash
-	$ docker push $DTR_HOST/java/database
+	docker push $DTR_HOST/java/database
 	```
 
-10. In your web browser head back to your DTR server and click `Tags` from the horizontal menu in your `database` repo to see the details of the repo. Notice that your newly pushed image is now on your DTR.
-
+10. In your web browser head back to your DTR server and click `Tags` from the horizontal menu in your `database` repository to see the details of the repository. Notice that your newly pushed image is now on your DTR.
 
 
 ### <a name="task2.3"></a> Task 2.3: Deploy the Web App using UCP
