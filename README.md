@@ -2,9 +2,9 @@
 
 Docker Enterprise 3.0 is the first Containers-as-a-Service platform to offer production-level support for the integrated management and security of both Linux and Windows Server Containers. It is also the first platform to support both Docker Swarm and Kubernetes orchestration.
 
-In this lab we'll use a Docker Enterprise cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
+In this lab we'll use a Docker Enterprise 3.0 cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
 
-> **Difficulty**: Intermediate (assumes basic familiarity with Docker) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
+> **Difficulty**: Intermediate (assumes basic familiarity with Docker and Command Line) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
 
 > **Time**: Approximately 75 minutes
 
@@ -63,11 +63,11 @@ By clicking a name on the left, the console window will be connected to that nod
 ### 2. Access to your Universal Control Plane (UCP) and Docker Trusted Registry (DTR) servers
 
 Additionally, the PWD screen provides you with a one-click access to the Universal Control Plane (UCP)
-web-based management interface as well as the Docker Trusted Registry (DTR) web-based management interface. Clicking on either the `UCP` or `DTR` button will bring up the respective server web interface in a new tab.
+web-based management interface as well as the Docker Trusted Registry (DTR) web-based management interface. Clicking on either the `UCP` or `DTR` button will bring up the respective server web interface in a new tab. 
 
 ### 3. Session Information
 
-Throughout the lab you will be asked to provide either hostnames or login credentials that are unique to your environment. These are displayed for you at the bottom of the screen.
+Throughout the lab you will be asked to provide either hostnames or login credentials that are unique to your environment. The user credentials for both `UCP`and `DTR` can be found at the bottom of the PWD screen in the `Session Information` table.
 
 ## Document conventions
 
@@ -85,7 +85,7 @@ Throughout the lab you will be asked to provide either hostnames or login creden
     ![](./images/windows75.png)
 
 ## <a name="intro1"></a>Introduction
-Docker Enterprise provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and cloud providers. Docker Enterprise is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker Enterprise with cooperative support from Docker and the Certified Technology Partner.
+Docker Enterprise provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and cloud providers. Docker Enterprise is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker Enterprise with cooperative support from Docker and the Certified Technology Partners.
 
 ### <a name="intro2"></a>Overview of Orchestration
 While it is easy to run an application in isolation on a single machine, orchestration allows you to coordinate multiple machines to manage an application, with features like replication, encryption, load-balancing, service discovery and more. If you've read anything about Docker, you have probably heard of Kubernetes and Docker Swarm mode. Docker Enterprise allows you to use either Docker Swarm mode or Kubernetes for orchestration. 
@@ -99,7 +99,7 @@ Swarm mode uses managers and workers to run your applications. Managers run the 
 
 #### <a name="intro2.2"></a>Overview of Kubernetes
 
-Kubernetes is available in Docker Enterprise 3.0 and included in this workshop. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many component types. UCP simplifies a lot of that, relying on Docker Swarm to handle shared resources. We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 2.XX.
+Kubernetes is available in Docker Enterprise 3.0 and included in this workshop. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many component types. UCP simplifies a lot of that, relying on Docker Swarm to handle shared resources. We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 3.XX.
 
 ## <a name="task1"></a>Task 1: Configure the Docker Enterprise Cluster
 
@@ -133,7 +133,7 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 	> ![](./images/red_warning.png)
 
 
-3. From the main dashboard screen, click `Add a Node` on the bottom left of the screen
+3. From the main dashboard screen, navigate to `Shared Resources-> Nodes`. Click `Add a Node` on the upper right of the screen
 
 	![](./images/add_a_node.png)
 
