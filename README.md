@@ -393,33 +393,41 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 ### <a name="task2.3"></a> Task 2.3: Deploy the Web App using UCP
 ![](./images/linux75.png)
 
-The next step is to run the app in Swarm. As a reminder, the application has two components, the web front-end and the database. In order to connect to the database, the application needs a password. If you were just running this in development you could easily pass the password around as a text file or an environment variable. But in production you would never do that. So instead, we're going to create an encrypted secret. That way access can be strictly controlled.
+The next step is to run the app in Swarm. **Remember**, the application has two components, the web front-end and the database. In order to connect to the database, the application needs a password. If you were just running this in development you could easily pass the password around as a text file or an environment variable. But keys and passwords should **never** be be shared in a production environment. Instead, we're going to create an encrypted secret which will allow us to strictly control access.
 
-1. Go back to the first Play with Docker tab. Click on the UCP button. You'll have the same warnings regarding `https` that you have before. Click through those and log in. You'll see the Universal Control Panel dashboard.
+1. Go back to the first Play with Docker tab. Click on the UCP button. You'll receive the same `https` warning that you have before. Acknowledge the warnings and log in. You'll see the Universal Control Panel dashboard.
 
-2.  There's a lot here about managing the cluster. You can take a moment to explore around. When you're ready, click on `Swarm` and select `Secrets`.
+	![](./images/pwd_screen.png)
 
-	![](./images/ucp_secret_menu.png)
+2.  There's a lot of information on this page about managing the cluster. You can take a moment to explore around and get famiiar with the layout. Next, click on `Swarm` and select `Secrets`.
 
-3. Click the `Create` button and you'll see a `Create Secret` screen. Type `mysql_password` in `Name` and `Dockercon!!!` in `Content`. Then click `Create` in the lower right. Obviously you wouldn't use this password in a real production environment. You'll see the content box allows for quite a bit of content, you can actually create structured content here that will be encrypted with the secret.
+	![](./images/ucp_secret_menu_1.png)
+
+3. Click the `Create` button to access the `Create Secret` screen. Type `mysql_password` in `Name` and `Dockercon!!!` in `Content`, then click `Create` in the lower right corner. For production environments, more complex passwords should be used. You'll notice the content box allows you to create structured content that will be encrypted with the secret.
 
 	![](./images/secret_add_config.png)
 
-4. Next we're going to create two networks. First click on `Networks` under `Swarm` in the left panel, and select `Create` in the upper right. You'll see a `Create Network` screen. Name your first network `back-tier`. Leave everything else the default and click `Create` in the lower right.
+4. Next we're going to create two networks. First click on `Networks` under the `Swarm` section on the left panel, and select `Create` in the upper right corner of the page. You'll be presented with a `Create Network` form. Name this network `back-tier`. Leave everything else the default and click `Create` in the lower right.
 
-	![](./images/ucp_network.png)
+	![](./images/ucp_network_1.png)
+	![](./images/ucp_network_2.png)
 
-5. Repeat step 4 but with a new network `front-tier`.
+5. Repeat step 4 but with a new network called `front-tier`.
 
-6. Now we're going to use the fast way to create your application: `Stacks`. In the left panel, click `Shared Resources`, `Stacks` and then `Create Stack` in the upper right corner.
+6. Now we're going to use the fast way to create your application using `Stacks`. In the left panel, click `Shared Resources`, `Stacks` and then `Create Stack` in the upper right corner.
 
-7. Name your stack `java_web` and select `Swarm Services` for your `Mode`. Then click `Next`. Below you'll see we've included a `.yml` file. Before you paste that in to the `Compose.yml` edit box, note that you'll need to make a quick change. Each of the images is defined as `<dtr hostname>/java/<something>`. You'll need to change the `<dtr hostname>` to the DTR Hostname found on the Play with Docker landing page for your session. It will look something like this:
+	![](./images/ucp_shared_stacks.png)
+
+7. Name your stack `java_web` and select `Swarm Services` for your `Orchestrator Mode`. Leave `Application File Mode` as default, then click `Next`. 
+
+	![](./images/ucp_add_app_file.png)
+
+Below is a sample `.yml` file that you can use to populate your file. **Note** : Before pasting the content into your `Compose.yml` edit box, you'll need to modify a couple of items. Each of the images is defined as `<dtr hostname>/java/<something>`, which you'll need to change to the `<dtr hostname>` found on the Play with the Docker landing page for your session. 
+
+It will look something like this:
 `ip172-18-0-21-baeqqie02b4g00c9skk0.direct.ee-beta2.play-with-docker.com`
-You can do that right in the edit box in `UCP` but wanted to make sure you saw that first.
 
-	![](./images/ucp_create_stack.png)
-
-	Here's the `Compose` file. Once you've copy and pasted it in, and made the changes, click `Create` in the lower right corner.
+This can be done right from the `Add Application File` edit box on the `UCP Create Application` form. 
 
     ```yaml
     version: "3.3"
@@ -458,11 +466,13 @@ You can do that right in the edit box in `UCP` but wanted to make sure you saw t
 
 	Then click `Done` in the lower right.
 
-8. You've deployed your app! Now go and see it. Open a new tab or browser window and enter the `UCP Hostname`. Then add the `:8080/java-web` to the end of the URL, you will see the app loaded.
+8. Congratulations! You've deployed your first app! Now it's time to go and test the functionality. Open a new tab or browser window and enter the `UCP Hostname` and append `:8080/java-web` to the end of the URL. 
+
+`E.g. ip172-18-0-21-baeqqie02b4g00c9skk0.direct.ee-beta2.play-with-docker.com:8080/java-web` 
 
 	![](./images/java-web1.png)
 
-9. Delete the `java_web` stack.
+9. Delete your `java_web` application stack.
 
 ## <a name="task3"></a>Task 3: Deploy the next version with a Windows node
 
