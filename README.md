@@ -37,7 +37,7 @@ In this lab we'll use a Docker Enterprise 3.0 cluster. You will have an environm
 >   * [Task 4.2: Examine the Docker Compose File](#task4.2)
 >   * [Task 4.3: Deploy to Kubernetes using the Docker Compose file](#task4.3)
 >   * [Task 4.4: Verify the app](#task4.4)
-> * [Task 5: Security Scanning](#task5)
+> * [Task 5: Image Scanning](#task5)
 
 ## Understanding the Play With Docker Interface
 
@@ -180,7 +180,7 @@ However, before we create the repositories, we do want to restrict access to the
 
 	> **Note**: As with UCP before, DTR is also using self-signed certs. It's safe to click through any browser warning you might encounter.
 
-2. **FIX SCREENSHOT** From the main DTR page, click users and then the New User button.
+2. From the main DTR page, click users and then the New User button.
 
 	![](./images/user_screen.png)
 
@@ -476,7 +476,7 @@ This can be done right from the `Add Application File` edit box on the `UCP Crea
 
 ## <a name="task3"></a>Task 3: Deploy the next version with a Windows node
 
-Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker Enterprise, we are going to do it in a Windows container.
+Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker Enterprise, we are going to do this deployment using a Windows container.
 
 > If your workshop organizer requested a Windows only environment, you can skip to <a href="#task4">Task 4</a>.
 
@@ -641,14 +641,14 @@ Now that we have built, deployed and scaled a multi OS application to Docker Ent
 
 Docker Enterprise lets you choose the orchestrator to use to deploy and manage your application, between Swarm and Kubernetes. In the previous tasks we have used Swarm for orchestration. In this section we will deploy the application to Kubernetes and see how Docker Enterprise exposes Kubernetes concepts.
 
-Before moving forward we need to make sure that our cluster worker nodes can schedule kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
+Before moving forward we need to make sure that our cluster worker nodes can schedule Kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
 ![](./images/node_types.png)
 
 Click on the `worker2` node and change it's orchestration type to `mixed` using the gear icon on the top right corner. Repeat the same step for `worker3`.
 ![](./images/node_mixed.png)
 
 
-Now your cluster is configured to run both kuberentes and Swarm workloads
+Now your cluster is configured to run both Kuberentes and Swarm workloads
 
 
 ### <a name="task4.1"></a>Task 4.1: Build .NET Core app instead of .NET
@@ -834,37 +834,44 @@ The `Node Port` 32770 is exposed. Note this is different than previous implement
 
 ![](./images/kube-running-app.png)
 
-## <a name="task5"></a>Task 5: Security Scanning
+## <a name="task5"></a>Task 5: Image Scanning
 
-Security is crucial for all organizations. And it is a complicated topic, too indepth to go through in detail here. We're going to look at just one of the features that Docker Enterprise has to help you build a secure software supply chain: Security Scanning.
+Security is crucial for all organizations. And it is a complicated topic, too in-depth to go through in detail here. We're going to look at just one of the features that Docker Enterprise has to help you build a secure software supply chain: Image Scanning which checks for vulnerabilities in your images
 
-1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and `Online`.
+1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, turn on scanning now so DTR downloads the latest database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and click `Enable Online Syncing` to start the download of database of security vulnerabilities.
+
 
 	![](./images/scanning-activate.png)
 
-	This will take awhile so you may want to take a break by reading up on [Docker Security](https://www.docker.com/docker-security).
+	
+> **Note**: This will take awhile so you may want to take a break by reading up on [Docker Security](https://www.docker.com/docker-security).
 
-2. Once the scanning database has downloaded, you can scan individual images. Select a repository, such as `java/java_web`, and then select the `Tags` tab. If it hasn't already scanned, select `Start scan`. If it hasn't scanned already, this can take 5-10 minutes or so.
+2. Once the security database has downloaded, you can scan individual images. Select a repository, such as `java/java_web`, and then select the `Tags` tab. If it hasn't already scanned, select `Start scan`. If it hasn't scanned already, this can take 5-10 minutes or so.
 
 	![](./images/java-scanned.png)
 
-	You see that in fact there are alot of vulnerabilities! That's because we deliberately chose an old version of the `tomcat` base image. Also, most operating systems and many libraries contain some vulnerabilities. The details of these vulnerabilites and when they come into play are important. You can select `View details` to get more information. You can see which layers of your image introduced vulnerabilities.
+	You see that in fact there are a lot of vulnerabilities! That's because we deliberately chose an old version of the `tomcat` base image. Also, most operating systems and many libraries contain some vulnerabilities. The details of these vulnerabilities and when they come into play are important. You can select `View details` to get more information. You can see which layers of your image introduced vulnerabilities.
 
  	![](./images/layers.png)
 
-	And by selecting `Components` you can see what the vulnerabilities are and what components introduced the vulnerabilies. You can also select the vulnerabilies and examine them in the [Common Vulnerabilies and Exploits database](https://cve.mitre.org/).
+	And by selecting `Components` you can see what the vulnerabilities are and what components introduced the vulnerabilities. You can also select the vulnerabilities and examine them in the [Common Vulnerabilities and Exploits database](https://cve.mitre.org/).
 
  	![](./images/cves.png)
 
  3. One way you can reduce your vulnerabilities is to identify where the vulnerabilities are coming from. For instance, you can see that in `java_web:latest`, 1 Critical and 9 Major issues were introduced with the Spring Framework. Time to upgrade that framework! Of course, upgrading the app is out of scope for this workshop, but you can see how it would give you the information you need to mitigate vulnerabilities.
  
- 4. You can also choose newer base images. For instance, you can go back to the Dockerfile in the `~/hybrid-app/java-app` directory, and change the second base image to `9.0.13-jre11-slim`. Slim images in official images are generally based on lighter-weight operating systems like `Alpine Linux` or `Debian`, which have reduced attack space. Then check the scanning again (this may again take 5-10 minutes). You'll still see vulnerabilites, but far fewer.
+ 4. You can also choose newer base images. For instance, you can go back to the Dockerfile in the `~/hybrid-app/java-app` directory, and change the second base image to `9.0.13-jre11-slim`. Slim images in official images are generally based on lighter-weight operating systems like `Alpine Linux` or `Debian`, which have reduced attack space. Then check the scanning again (this may again take 5-10 minutes). You'll still see vulnerabilities, but far fewer.
 
-5. DTR also allows you to [Sign Images](https://docs.docker.com/datacenter/dtr/2.4/guides/user/manage-images/sign-images/) and [Create promotion policies](https://docs.docker.com/datacenter/dtr/2.4/guides/user/create-promotion-policies/) which prevent users from using images in production that don't meet whatever criteria you set, including blocking images with critical and/or major vulnerabilities.
+5. Enable Image Scanning of images automatically. Select a repository, such as `java/java_web`, `Settings` tab, select the Image Scanning section, and Enable `On Push`. Every time a new image is pushed to this repository a new image scan is initiated.
+
+	![](./images/on_push_scan.png)
+
+
+6. DTR also allows you to [Sign Images](https://docs.docker.com/datacenter/dtr/2.4/guides/user/manage-images/sign-images/) and [Create promotion policies](https://docs.docker.com/datacenter/dtr/2.4/guides/user/create-promotion-policies/) which prevent users from using images in production that don't meet whatever criteria you set, including blocking images with critical and/or major vulnerabilities.
 
 ## Common Issues
 
-* Confirm that you are setting the environmental variable DTR_HOST to the DTR hostname.
+* Confirm that you are setting the environmental variable DTR_HOST to the DTR hostname. The DTR hostname can be found in the PWD session information at the bottom of the PWD page.
 
 ## Conclusion
 
