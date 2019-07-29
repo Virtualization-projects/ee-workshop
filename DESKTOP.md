@@ -1,8 +1,8 @@
 # Developing applications with Docker Desktop Enterprise
 
-Docker Enterprise 3.0 is the first Containers-as-a-Service platform to that extends from the developer's desktop to production. Docker Desktop Enterprise offers developers the ability to create container-based applications quickly and easily, even if they have little prior knowledge of Docker or Kubernetes. Developers on Windows 10 can create both Windows and Linux applications and developers on macOS can create Linux applications with Docker Desktop Enterprise. Application templates enable development managers, application architects, and security teams collaborate and create  templates, enabling developers to quickly get started coding with pre-approved guardrails that follow company standards, while still allowing flexibility to innovate. Docker Enterprise is the first platform to support both Docker Swarm and Kubernetes orchestration and this also extends to developer desktops with Docker Desktop Enterprise, including the ability to ensure matching API versions through the use of Version Packs.
+Docker Enterprise 3.0 is the first Containers-as-a-Service platform that extends from the developer’s desktop to production. Docker Desktop Enterprise offers developers the ability to create container-based applications quickly and easily, even if they have little prior knowledge of Docker or Kubernetes. Developers on Windows 10 can create both Windows and Linux applications, and developers on macOS can create Linux applications with Docker Desktop Enterprise. Application Templates enable developers to build modern applications using a library of predefined and organization-approved application and service templates, without requiring prior knowledge of Docker commands. By providing re-usable “scaffolding” for developing modern container-based applications, Application Templates accelerate developer onboarding and improve productivity. Docker Enterprise is the first platform to support both Docker Swarm and Kubernetes orchestration which also extends to developer desktops with Docker Desktop Enterprise. Docker Desktop Enterprise includes the ability to ensure matching API versions through the use of Version Packs.
 
-In this lab we'll use Docker Desktop Enterprise to create container-based applications locally. If you're also running the Docker Enterprise workshop you will have the opportunity to push these applications to the Docker Enterprise cluster using both Swarm and Kubernetes. 
+In this lab, we’ll use Docker Desktop Enterprise to create container-based applications locally. If you’re also running the Docker Enterprise workshop, you will have the opportunity to push these applications to the Docker Enterprise cluster using both Swarm and Kubernetes. 
 
 Suggested workshop order:
 * Task 1 - Task XX in this workshop can be run as a standalone workshop using only Docker Desktop Enterprise. 
@@ -11,14 +11,23 @@ Suggested workshop order:
 
 >**System Requirements**
 
-> You will need to have Docker Desktop Enterprise installed on your laptop with internet access in order to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
-> * Windows 10: Docker Desktop requires Hyper-V features in Windows 10 so you will need Windows 10 Pro or Enterprise to successfully install it.
->   * [Download Docker Desktop Enterprise for Windows 10](https://download.docker.com/XX)
-> * macOS: Docker Desktop requires macOS XX or later
->   * [Download Docker Desktop Enterprise for macOS](https://download.docker.com/XX)
-> * You will also need a code editor. Instructions here demonstrate the use of Visual Studio Code (vscode), but any code editor should work.
+
+>  Docker Desktop Enterprise installed on your laptop with internet access to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
+> * You will also need a code editor. Instructions here demonstrate the use of Microsoft Visual Studio Code (vscode), but any code editor should work.
 >   * No knowledge of the code syntax is assumed.
 >   * Some steps demonstrate the use of Docker plugins in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.
+
+**Windows**
+> **Windows 10: Docker Desktop requires Hyper-V features utilizing Windows 10 Pro or Enterprise to successfully install it.**
+>   
+* [Download Docker Desktop Enterprise for Windows 10](https://docs.docker.com/ee/desktop/admin/install/windows/)
+
+
+**Mac**
+>   * [Download Docker Desktop Enterprise for macOS](https://docs.docker.com/ee/desktop/admin/install/mac/)
+> * macOS: Docker Desktop requires macOS 10.12 and newer
+> * Mac Hardware must be a 2010 or newer model
+
 
 > **Difficulty**: Intermediate (assumes basic familiarity with Docker) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
 
