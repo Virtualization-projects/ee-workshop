@@ -13,9 +13,9 @@ Suggested workshop order:
 
 > You will need to have Docker Desktop Enterprise installed on your laptop with internet access in order to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
 > * Windows 10: Docker Desktop requires Hyper-V features in Windows 10 so you will need Windows 10 Pro or Enterprise to successfully install it.
->   * [Download Docker Desktop Enterprise for Windows 10](https://download.docker.com/XX)
+>   * [Download Docker Desktop Enterprise for Windows 10](https://download.docker.com/win/enterprise/DockerDesktop.msi)
 > * macOS: Docker Desktop requires macOS XX or later
->   * [Download Docker Desktop Enterprise for macOS](https://download.docker.com/XX)
+>   * [Download Docker Desktop Enterprise for macOS](https://docs.docker.com/ee/desktop/admin/configure/mac-admin)
 > * You will also need a code editor. Instructions here demonstrate the use of Visual Studio Code (vscode), but any code editor should work.
 >   * No knowledge of the code syntax is assumed.
 >   * Some steps demonstrate the use of Docker plugins in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.

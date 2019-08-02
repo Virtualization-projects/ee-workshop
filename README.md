@@ -2,9 +2,9 @@
 
 Docker Enterprise 3.0 is the first Containers-as-a-Service platform to offer production-level support for the integrated management and security of both Linux and Windows Server Containers. It is also the first platform to support both Docker Swarm and Kubernetes orchestration.
 
-In this lab we'll use a Docker Enterprise cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
+In this lab we'll use a Docker Enterprise 3.0 cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
 
-> **Difficulty**: Intermediate (assumes basic familiarity with Docker) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
+> **Difficulty**: Intermediate (assumes basic familiarity with Docker and Command Line) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
 
 > **Time**: Approximately 75 minutes
 
@@ -37,7 +37,7 @@ In this lab we'll use a Docker Enterprise cluster. You will have an environment 
 >   * [Task 4.2: Examine the Docker Compose File](#task4.2)
 >   * [Task 4.3: Deploy to Kubernetes using the Docker Compose file](#task4.3)
 >   * [Task 4.4: Verify the app](#task4.4)
-> * [Task 5: Security Scanning](#task5)
+> * [Task 5: Image Scanning](#task5)
 
 ## Understanding the Play With Docker Interface
 
@@ -63,11 +63,11 @@ By clicking a name on the left, the console window will be connected to that nod
 ### 2. Access to your Universal Control Plane (UCP) and Docker Trusted Registry (DTR) servers
 
 Additionally, the PWD screen provides you with a one-click access to the Universal Control Plane (UCP)
-web-based management interface as well as the Docker Trusted Registry (DTR) web-based management interface. Clicking on either the `UCP` or `DTR` button will bring up the respective server web interface in a new tab.
+web-based management interface as well as the Docker Trusted Registry (DTR) web-based management interface. Clicking on either the `UCP` or `DTR` button will bring up the respective server web interface in a new tab. 
 
 ### 3. Session Information
 
-Throughout the lab you will be asked to provide either hostnames or login credentials that are unique to your environment. These are displayed for you at the bottom of the screen.
+Throughout the lab you will be asked to provide either hostnames or login credentials that are unique to your environment. The user credentials for both `UCP`and `DTR` can be found at the bottom of the PWD screen in the `Session Information` table.
 
 ## Document conventions
 
@@ -85,7 +85,7 @@ Throughout the lab you will be asked to provide either hostnames or login creden
     ![](./images/windows75.png)
 
 ## <a name="intro1"></a>Introduction
-Docker Enterprise provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and cloud providers. Docker Enterprise is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker Enterprise with cooperative support from Docker and the Certified Technology Partner.
+Docker Enterprise provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and cloud providers. Docker Enterprise is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker Enterprise with cooperative support from Docker and the Certified Technology Partners.
 
 ### <a name="intro2"></a>Overview of Orchestration
 While it is easy to run an application in isolation on a single machine, orchestration allows you to coordinate multiple machines to manage an application, with features like replication, encryption, load-balancing, service discovery and more. If you've read anything about Docker, you have probably heard of Kubernetes and Docker Swarm mode. Docker Enterprise allows you to use either Docker Swarm mode or Kubernetes for orchestration. 
@@ -99,7 +99,7 @@ Swarm mode uses managers and workers to run your applications. Managers run the 
 
 #### <a name="intro2.2"></a>Overview of Kubernetes
 
-Kubernetes is available in Docker Enterprise 3.0 and included in this workshop. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many component types. UCP simplifies a lot of that, relying on Docker Swarm to handle shared resources. We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 2.XX.
+Kubernetes is available in Docker Enterprise 3.0 and included in this workshop. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many component types. UCP simplifies a lot of that, relying on Docker Swarm to handle shared resources. We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 3.XX.
 
 ## <a name="task1"></a>Task 1: Configure the Docker Enterprise Cluster
 
@@ -137,9 +137,9 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	![](./images/add_a_node.png)
 
-4. Select node type "Windows", check the box, that you followed the instructions and copy the text from the dark box shown on the `Add Node` screen. Don't select a custom listen or advertise address.
+4. Select node type "Windows", Under the Step 2 section check the box `I have followed the instructions and I'm ready to join my windows node.` Next, copy the text from the `docker swarm join` command from the dark box shown on the `Add Node` screen. Don't select a custom listen or advertise address.
 
-	> **Note** There is an icon in the upper right corner of the box that you can click to copy the text to your clipboard
+	> **Note** There is an icon in the upper right corner of the dark box that you can click to copy the text to your clipboard.
 
 	> ![](./images/join_text.png)
 
@@ -154,6 +154,8 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	You should see the message `This node joined a Swarm as a worker.` indicating you've successfully joined the node to the cluster.
 
+	**Note** If the command failed, ensure that the command was correctly pasted into the Windows console.
+
 7. Switch back to the UCP server in your web browser and click the `x` in the upper right corner to close the `Add Node` window
 
 8. You will be taken back to the UCP Dashboard. In the left menu bar, click Shared Resources, and select Nodes.
@@ -162,7 +164,7 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	You should be taken to the `Nodes` screen and will see 4 worker nodes listed at the bottom of your screen.
 
-	Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `healthy`
+	Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `Healthy UCP worker`
 	
 	![](./images/node_listing.png)
 
@@ -170,11 +172,11 @@ Congratulations on adding a Windows node to your UCP cluster. Now you are ready 
 
 ### <a name="task1.3"></a>Task 1.3: Create Three DTR Repositories
 
-Docker Trusted Registry is a special server designed to store and manage your Docker images. In this lab we're going to create three different Docker images, and push them to DTR. But before we can do that, we need to setup repositories in which those images will reside. Often that would be enough.
+Docker Trusted Registry (DTR) is a special service designed to store and manage your Docker images. In this lab we're going to create three different Docker images, and push them to DTR. Before we can do that, we need to setup repositories in which those images will reside.
 
 However, before we create the repositories, we do want to restrict access to them. Since we have two distinct app components, a Java web app (with a database), and a .NET API, we want to restrict access to them to the team that develops them, as well as the administrators. To do that, we need to create two users and then two organizations.
 
-1. In the PWD web interface click the `DTR` button on the left side of the screen.
+1. In the PWD web interface, click the `DTR` button on the left side of the screen.
 
 	> **Note**: As with UCP before, DTR is also using self-signed certs. It's safe to click through any browser warning you might encounter.
 
@@ -188,86 +190,87 @@ However, before we create the repositories, we do want to restrict access to the
 
 	Then do the same for a `dotnet_user`.
 
-4. Select the Organization button.
+4. In the left Menu, select Organizations
 
 	![](./images/organization_screen.png)
 
-5. Press New organization button, name it java, and click save.
+5. Press the `New organization` button, name it java, and click save.
 
-	![](./images/java_organization_new.png)
+    ![](./images/java_organization_new.png)
 
 	Then do the same with dotnet and you'll have two organizations.
 
 	![](./images/two_organizations.png)
 
-6. Now you get to add a repository! Click on the java organization, select repositories and then Add repository
+6. Now you get to add a repository! Click on the java organization, select Repositories and then `New repository`
 
 	![](./images/add_repository_java.png)
 
-7. Name the repository `java_web`. 
+7. Name the repository `java_web`, provide a Description and click `Save`.
 
 	![](./images/create_repository.png)
 
 	> Note the repository is listed as "Public" but that means it is publicly viewable by users of DTR. It is not available to the general public.
 
-8. Now it's time to create a team so you can restrict access to who administers the images. Select the `java` organization and the members will show up. Press Add user and start typing in java. Select the `java_user` when it comes up.
+8. Now it's time to create a team so you can restrict access to who administers the images. Select the Members Menu Tab and Press `Add user` button. Start typing in java in the Search by Username box.. Select the `java_user` when it comes up.
 
 	![](./images/add_java_user_to_organization.png)
 
-9. Next select the `java` organization and press the `Team` button to create a `web` team.
+9. Next select the `java` organization and press the Teams Green `+` button to create a `web` team.
 
 	![](./images/team.png)
 
-10. Add the `java_user` user to the `web` team and click save.
+10. Select the `web` Team and click the `Add user` button. Add the `java_user` user to the `web` team and click save.
 
 	![](./images/team_add_user.png)
 
 	![](./images/team_with_user.png)
 
-11. Next select the `web` team and select the `Repositories` tab. Select `Add Existing repository` and choose the `java_web`repository. You'll see the `java` account is already selected. Then select `Read/Write` permissions so the `web` team has permissions to push images to this repository. Finally click `save`.
+11. Next select the `web` team and select the `Repositories` tab and click `New repository`. Select `Add Existing repository` and click in the `Repository Name` field and choose the `java_web`repository. You'll see the `java` account is already selected. Then select `Read/Write` permissions so the `web` team has permissions to push images to this repository. Finally click `Save`.
 
 	![](./images/add_java_web_to_team.png)
 
-12. Now add a new repository also owned by the web team and call it `database`. This can be done directly from the web team's `Repositories` tab by selecting the radio button for Add `New` Repository. Be sure to grant `Read/Write` permissions for this repository to the `web` team as well.
+12. Now add a `New` repository also owned by the web team and call it `database`. This can be done directly from the web team's `Repositories` tab by clicking the `New repository` button, select Add `New`repository and name the repository `database`. Be sure to grant `Read/Write` permissions for this repository which will be part of the `web` team as well.
 
 	![](./images/add_repository_database.png)
 
-13. Repeat 4-11 above to create a `dotnet` organization with a repository called `dotnet_api`, the `dotnet_user`, and a team named `api` (with `dotnet_user` as a member). Grant `read/write` permissions for the `dotnet_api` repository to the `api` team.
+13. Repeat 4-11 above to create the same structure in the `dotnet` organization. First, create the `api` Team, add the `dotnet_user` as member to to the `api`Team and create the repository `dotnet_api`. Grant `read/write` permissions for the `dotnet_api` repository to the `api` team.
 
 14. From the main DTR page, click Repositories, you will now see all three repositories listed.
 	
 	![](./images/three_repositories.png)
 
-15. (optional) If you want to check out security scanning in Task 5, you should turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and `Online`.
+15. (optional) If you want to check out security scanning in Task 5, you should turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` method for installation and updates is `Online` and click `Enable Online Syncing`
 
 	![](./images/scanning-activate.png)
 
 Congratulations, you have created three new repositories in two new organizations, each with one team and a user each.
 
 ## <a name="task2"></a>Task 2: Deploy a Java Web App with Universal Control Plane
+
 Now that we've completely configured our cluster, let's deploy a web app. The Signup application is a basic Java CRUD (Create, Read, Update, Delete) application that uses Spring and Hibernate to transact queries against MySQL. It runs in Tomcat.
 
 ### <a name="task2.1"></a> Task 2.1: Clone the Demo Repo
 
 ![](./images/linux75.png)
 
-1. From PWD click on the `worker1` link on the left to connnect your web console to the UCP Linux worker node.
+1. From PWD click on the `worker1` link on the left to connect your web console to the UCP Linux worker node. Click the terminal window and hit the enter or space key to activate the terminal window.
 
-2. Before we do anything, let's configure an environment variable for the DTR URL/DTR hostname. You may remember that the session information from the Play with Docker landing page. Select and copy the the URL for the DTR hostname.
+2. Before we do anything, let's configure an environment variable for the DTR URL/DTR hostname. You may remember that the session information from the Play with Docker landing page (Below the terminal window). Select and copy the URL for the DTR hostname.
 
 	![](./images/session-information.png)
 
 3. Set an environment variable `DTR_HOST` using the DTR host name defined on your Play with Docker landing page:
 
 	```bash
-	$ export DTR_HOST=<dtr hostname>
-	$ echo $DTR_HOST
+	  export DTR_HOST=<dtr hostname>
+	  echo $DTR_HOST
 	```
 
 4. Now use git to clone the workshop repository.
 
 	```bash
-	$ git clone https://github.com/dockersamples/hybrid-app.git
+	   git clone https://github.com/dockersamples/hybrid-app.git
 	```
 
 	You should see something like this as the output:
@@ -291,17 +294,17 @@ Now that we've completely configured our cluster, let's deploy a web app. The Si
 1. Change into the `java-app` directory.
 
 	```bash
-	$ cd ./hybrid-app/java-app/
+	  cd ./hybrid-app/java-app/
 	```
 
 2. Use `docker build` to build your Docker image.
 
 	```Bash
-	$ docker build -t $DTR_HOST/java/java_web .
+	  docker build -t $DTR_HOST/java/java_web .
 	```
 > Note the final "." in the above command. The "." is the build context, specifically the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
 
-The `-t` tags the image with a name. In our case, the name indicates which DTR server and under which organization's respository the image will live.
+The `-t` tags the image with a tag or name. In our case, the name indicates which DTR server and under which organization's repository the image will reside.
 
 > **Note**: Feel free to examine the Dockerfile in this directory if you'd like to see how the image is being built.
 
@@ -309,10 +312,11 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 3. Log into your DTR server from the command line.
  
-	First use the `dotnet_user`, which isn't part of the java organization
+	First use the `dotnet_user` and password `user1234` which isn't part of the java organization
 
 	```bash
-	$ docker login $DTR_HOST
+	docker login $DTR_HOST
+
 	Username: <your username>
 	Password: <your password>
 	Login Succeeded
@@ -321,11 +325,12 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 	Use `docker push` to upload your image up to Docker Trusted Registry.
 	
 	```bash
-	$ docker push $DTR_HOST/java/java_web
+	docker push $DTR_HOST/java/java_web
 	```
 	
 	```bash
-	$ docker push $DTR_HOST/java/java_web
+	docker push $DTR_HOST/java/java_web
+
 	The push refers to a repository [.<dtr hostname>/java/java_web]
 	8cb6044fd4d7: Preparing
 	07344436fe27: Preparing
@@ -336,10 +341,10 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 	As you can see, the access control that you established in the [Task 1.3](#task1.3) prevented you from pushing to this repository.	
 
-4. Now try logging in using `java_user`, and then use `docker push` to upload your image up to Docker Trusted Registry.
+4. Now try logging in using `java_user`and password `user1234` then use `docker push` to upload your image up to Docker Trusted Registry.
 
 	```bash
-	$ docker push $DTR_HOST/java/java_web
+	docker push $DTR_HOST/java/java_web
 	```
 
 	The output should be similar to the following:
@@ -356,7 +361,7 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 	Success! Because you are using a user name that belongs to the right team in the right organization, you can push your image to DTR.
 
-5. In your web browser head back to your DTR server and click `View Details` next to your `java_web` repo to see the details of the repo.
+5. In your web browser head back to DTR and click `View Details` next to your `java_web` repository to see the details of the repository.
 
 	> **Note**: If you've closed the tab with your DTR server, just click the `DTR` button from the PWD page.
 
@@ -366,56 +371,63 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 
 7. Next, build the MySQL database image. Change into the database directory.
 
-```bash
-	$ cd ../database
-```
+	```bash
+	cd ../database
+	```
 
 8. Use `docker build` to build your Docker image.
 
 	```bash
-	$ docker build -t $DTR_HOST/java/database .
+	docker build -t $DTR_HOST/java/database .
 	```
 > Note the final "." in the above command. The "." is the build context, specifically the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
 
 9. Use `docker push` to upload your image up to Docker Trusted Registry.
 	```bash
-	$ docker push $DTR_HOST/java/database
+	docker push $DTR_HOST/java/database
 	```
 
-10. In your web browser head back to your DTR server and click `Tags` from the horizontal menu in your `database` repo to see the details of the repo. Notice that your newly pushed image is now on your DTR.
-
+10. In your web browser head back to your DTR server and click `Tags` from the horizontal menu in your `database` repository to see the details of the repository. Notice that your newly pushed image is now on your DTR.
 
 
 ### <a name="task2.3"></a> Task 2.3: Deploy the Web App using UCP
 ![](./images/linux75.png)
 
-The next step is to run the app in Swarm. As a reminder, the application has two components, the web front-end and the database. In order to connect to the database, the application needs a password. If you were just running this in development you could easily pass the password around as a text file or an environment variable. But in production you would never do that. So instead, we're going to create an encrypted secret. That way access can be strictly controlled.
+The next step is to run the app in Swarm. **Remember**, the application has two components, the web front-end and the database. In order to connect to the database, the application needs a password. If you were just running this in development you could easily pass the password around as a text file or an environment variable. But keys and passwords should **never** be be shared in a production environment. Instead, we're going to create an encrypted secret which will allow us to strictly control access.
 
-1. Go back to the first Play with Docker tab. Click on the UCP button. You'll have the same warnings regarding `https` that you have before. Click through those and log in. You'll see the Universal Control Panel dashboard.
+1. Go back to the first Play with Docker tab. Click on the UCP button. You'll receive the same `https` warning that you have before. Acknowledge the warnings and log in. You'll see the Universal Control Panel dashboard.
 
-2.  There's a lot here about managing the cluster. You can take a moment to explore around. When you're ready, click on `Swarm` and select `Secrets`.
+	![](./images/pwd_screen.png)
 
-	![](./images/ucp_secret_menu.png)
+2.  There's a lot of information on this page about managing the cluster. You can take a moment to explore around and get famiiar with the layout. Next, click on `Swarm` and select `Secrets`.
 
-3. Click the `Create` button and you'll see a `Create Secret` screen. Type `mysql_password` in `Name` and `Dockercon!!!` in `Content`. Then click `Create` in the lower right. Obviously you wouldn't use this password in a real production environment. You'll see the content box allows for quite a bit of content, you can actually create structured content here that will be encrypted with the secret.
+	![](./images/ucp_secret_menu_1.png)
+
+3. Click the `Create` button to access the `Create Secret` screen. Type `mysql_password` in `Name` and `Dockercon!!!` in `Content`, then click `Create` in the lower right corner. For production environments, more complex passwords should be used. You'll notice the content box allows you to create structured content that will be encrypted with the secret.
 
 	![](./images/secret_add_config.png)
 
-4. Next we're going to create two networks. First click on `Networks` under `Swarm` in the left panel, and select `Create` in the upper right. You'll see a `Create Network` screen. Name your first network `back-tier`. Leave everything else the default and click `Create` in the lower right.
+4. Next we're going to create two networks. First click on `Networks` under the `Swarm` section on the left panel, and select `Create` in the upper right corner of the page. You'll be presented with a `Create Network` form. Name this network `back-tier`. Leave everything else the default and click `Create` in the lower right.
 
-	![](./images/ucp_network.png)
+	![](./images/ucp_network_1.png)
+	![](./images/ucp_network_2.png)
 
-5. Repeat step 4 but with a new network `front-tier`.
+5. Repeat step 4 but with a new network called `front-tier`.
 
-6. Now we're going to use the fast way to create your application: `Stacks`. In the left panel, click `Shared Resources`, `Stacks` and then `Create Stack` in the upper right corner.
+6. Now we're going to use the fast way to create your application using `Stacks`. In the left panel, click `Shared Resources`, `Stacks` and then `Create Stack` in the upper right corner.
 
-7. Name your stack `java_web` and select `Swarm Services` for your `Mode`. Then click `Next`. Below you'll see we've included a `.yml` file. Before you paste that in to the `Compose.yml` edit box, note that you'll need to make a quick change. Each of the images is defined as `<dtr hostname>/java/<something>`. You'll need to change the `<dtr hostname>` to the DTR Hostname found on the Play with Docker landing page for your session. It will look something like this:
+	![](./images/ucp_shared_stacks.png)
+
+7. Name your stack `java_web` and select `Swarm Services` for your `Orchestrator Mode`. Leave `Application File Mode` as default, then click `Next`. 
+
+	![](./images/ucp_add_app_file.png)
+
+Below is a sample `.yml` file that you can use to populate your file. **Note** : Before pasting the content into your `Compose.yml` edit box, you'll need to modify a couple of items. Each of the images is defined as `<dtr hostname>/java/<something>`, which you'll need to change to the `<dtr hostname>` found on the Play with the Docker landing page for your session. 
+
+It will look something like this:
 `ip172-18-0-21-baeqqie02b4g00c9skk0.direct.ee-beta2.play-with-docker.com`
-You can do that right in the edit box in `UCP` but wanted to make sure you saw that first.
 
-	![](./images/ucp_create_stack.png)
-
-	Here's the `Compose` file. Once you've copy and pasted it in, and made the changes, click `Create` in the lower right corner.
+This can be done right from the `Add Application File` edit box on the `UCP Create Application` form. 
 
     ```yaml
     version: "3.3"
@@ -454,15 +466,17 @@ You can do that right in the edit box in `UCP` but wanted to make sure you saw t
 
 	Then click `Done` in the lower right.
 
-8. You've deployed your app! Now go and see it. Open a new tab or browser window and enter the `UCP Hostname`. Then add the `:8080/java-web` to the end of the URL, you will see the app loaded.
+8. Congratulations! You've deployed your first app! Now it's time to go and test the functionality. Open a new tab or browser window and enter the `UCP Hostname` and append `:8080/java-web` to the end of the URL. 
+
+`E.g. ip172-18-0-21-baeqqie02b4g00c9skk0.direct.ee-beta2.play-with-docker.com:8080/java-web` 
 
 	![](./images/java-web1.png)
 
-9. Delete the `java_web` stack.
+9. Delete your `java_web` application stack.
 
 ## <a name="task3"></a>Task 3: Deploy the next version with a Windows node
 
-Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker Enterprise, we are going to do it in a Windows container.
+Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker Enterprise, we are going to do this deployment using a Windows container.
 
 > If your workshop organizer requested a Windows only environment, you can skip to <a href="#task4">Task 4</a>.
 
@@ -627,14 +641,14 @@ Now that we have built, deployed and scaled a multi OS application to Docker Ent
 
 Docker Enterprise lets you choose the orchestrator to use to deploy and manage your application, between Swarm and Kubernetes. In the previous tasks we have used Swarm for orchestration. In this section we will deploy the application to Kubernetes and see how Docker Enterprise exposes Kubernetes concepts.
 
-Before moving forward we need to make sure that our cluster worker nodes can schedule kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
+Before moving forward we need to make sure that our cluster worker nodes can schedule Kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
 ![](./images/node_types.png)
 
 Click on the `worker2` node and change it's orchestration type to `mixed` using the gear icon on the top right corner. Repeat the same step for `worker3`.
 ![](./images/node_mixed.png)
 
 
-Now your cluster is configured to run both kuberentes and Swarm workloads
+Now your cluster is configured to run both Kuberentes and Swarm workloads
 
 
 ### <a name="task4.1"></a>Task 4.1: Build .NET Core app instead of .NET
@@ -820,37 +834,44 @@ The `Node Port` 32770 is exposed. Note this is different than previous implement
 
 ![](./images/kube-running-app.png)
 
-## <a name="task5"></a>Task 5: Security Scanning
+## <a name="task5"></a>Task 5: Image Scanning
 
-Security is crucial for all organizations. And it is a complicated topic, too indepth to go through in detail here. We're going to look at just one of the features that Docker Enterprise has to help you build a secure software supply chain: Security Scanning.
+Security is crucial for all organizations. And it is a complicated topic, too in-depth to go through in detail here. We're going to look at just one of the features that Docker Enterprise has to help you build a secure software supply chain: Image Scanning which checks for vulnerabilities in your images
 
-1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, turn on scanning now so DTR downloads the database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and `Online`.
+1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, turn on scanning now so DTR downloads the latest database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and click `Enable Online Syncing` to start the download of database of security vulnerabilities.
+
 
 	![](./images/scanning-activate.png)
 
-	This will take awhile so you may want to take a break by reading up on [Docker Security](https://www.docker.com/docker-security).
+	
+> **Note**: This will take awhile so you may want to take a break by reading up on [Docker Security](https://www.docker.com/docker-security).
 
-2. Once the scanning database has downloaded, you can scan individual images. Select a repository, such as `java/java_web`, and then select the `Tags` tab. If it hasn't already scanned, select `Start scan`. If it hasn't scanned already, this can take 5-10 minutes or so.
+2. Once the security database has downloaded, you can scan individual images. Select a repository, such as `java/java_web`, and then select the `Tags` tab. If it hasn't already scanned, select `Start scan`. If it hasn't scanned already, this can take 5-10 minutes or so.
 
 	![](./images/java-scanned.png)
 
-	You see that in fact there are alot of vulnerabilities! That's because we deliberately chose an old version of the `tomcat` base image. Also, most operating systems and many libraries contain some vulnerabilities. The details of these vulnerabilites and when they come into play are important. You can select `View details` to get more information. You can see which layers of your image introduced vulnerabilities.
+	You see that in fact there are a lot of vulnerabilities! That's because we deliberately chose an old version of the `tomcat` base image. Also, most operating systems and many libraries contain some vulnerabilities. The details of these vulnerabilities and when they come into play are important. You can select `View details` to get more information. You can see which layers of your image introduced vulnerabilities.
 
  	![](./images/layers.png)
 
-	And by selecting `Components` you can see what the vulnerabilities are and what components introduced the vulnerabilies. You can also select the vulnerabilies and examine them in the [Common Vulnerabilies and Exploits database](https://cve.mitre.org/).
+	And by selecting `Components` you can see what the vulnerabilities are and what components introduced the vulnerabilities. You can also select the vulnerabilities and examine them in the [Common Vulnerabilities and Exploits database](https://cve.mitre.org/).
 
  	![](./images/cves.png)
 
  3. One way you can reduce your vulnerabilities is to identify where the vulnerabilities are coming from. For instance, you can see that in `java_web:latest`, 1 Critical and 9 Major issues were introduced with the Spring Framework. Time to upgrade that framework! Of course, upgrading the app is out of scope for this workshop, but you can see how it would give you the information you need to mitigate vulnerabilities.
  
- 4. You can also choose newer base images. For instance, you can go back to the Dockerfile in the `~/hybrid-app/java-app` directory, and change the second base image to `9.0.13-jre11-slim`. Slim images in official images are generally based on lighter-weight operating systems like `Alpine Linux` or `Debian`, which have reduced attack space. Then check the scanning again (this may again take 5-10 minutes). You'll still see vulnerabilites, but far fewer.
+ 4. You can also choose newer base images. For instance, you can go back to the Dockerfile in the `~/hybrid-app/java-app` directory, and change the second base image to `9.0.13-jre11-slim`. Slim images in official images are generally based on lighter-weight operating systems like `Alpine Linux` or `Debian`, which have reduced attack space. Then check the scanning again (this may again take 5-10 minutes). You'll still see vulnerabilities, but far fewer.
 
-5. DTR also allows you to [Sign Images](https://docs.docker.com/datacenter/dtr/2.4/guides/user/manage-images/sign-images/) and [Create promotion policies](https://docs.docker.com/datacenter/dtr/2.4/guides/user/create-promotion-policies/) which prevent users from using images in production that don't meet whatever criteria you set, including blocking images with critical and/or major vulnerabilities.
+5. Enable Image Scanning of images automatically. Select a repository, such as `java/java_web`, `Settings` tab, select the Image Scanning section, and Enable `On Push`. Every time a new image is pushed to this repository a new image scan is initiated.
+
+	![](./images/on_push_scan.png)
+
+
+6. DTR also allows you to [Sign Images](https://docs.docker.com/datacenter/dtr/2.4/guides/user/manage-images/sign-images/) and [Create promotion policies](https://docs.docker.com/datacenter/dtr/2.4/guides/user/create-promotion-policies/) which prevent users from using images in production that don't meet whatever criteria you set, including blocking images with critical and/or major vulnerabilities.
 
 ## Common Issues
 
-* Confirm that you are setting the environmental variable DTR_HOST to the DTR hostname.
+* Confirm that you are setting the environmental variable DTR_HOST to the DTR hostname. The DTR hostname can be found in the PWD session information at the bottom of the PWD page.
 
 ## Conclusion
 
