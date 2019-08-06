@@ -476,17 +476,17 @@ This can be done right from the `Add Application File` edit box on the `UCP Crea
 
 ## <a name="task3"></a>Task 3: Deploy the next version with a Windows node
 
-Now that we've moved the app and updated it, we're going to add in a user sign-in API. For fun, and to show off the cross-platform capabilities of Docker Enterprise, we are going to do this deployment using a Windows container.
+Now that we've moved the app and updated it, we're going to add an user sign-in API. For fun, to illustrate Docker Enterprise's cross-platform capabilities, we're going to perform this deployment using a Windows container.
 
-> If your workshop organizer requested a Windows only environment, you can skip to <a href="#task4">Task 4</a>.
+> If your workshop organizer requested a Windows only environment, you can skip ahead to <a href="#task4">Task 4</a>.
 
 ### <a name="task3.1"></a> Task 3.1: Clone the repository
 
 ![](./images/windows75.png)
 
-1. Because this is a Windows container, we have to build it on a Windows host. Switch back to the main Play with Docker page, select the name of the Windows worker. 
+1. Because this is a Windows container, it has to be deployed on a Microsoft Windows host. Switch back to the main Play with Docker page and select the name of the Windows worker. 
 
-	First make sure Docker is running - it runs as a background Windows Service:
+	First verify that Docker is running - it runs as a background Windows Service:
 
 	```
 	Start-Service docker
@@ -498,7 +498,7 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 	PS C:\> git clone https://github.com/dockersamples/hybrid-app.git
 	```
 
-2. Set an environment variable for the DTR host name. Much like you did for the Java app, this will make a few step easier. Copy the DTR host name again and create the environment variable. For instance, if your DTR host was `ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com` you would type:
+2. Set an environment variable for the DTR host name. Similar to what you did for the Java app, this will simplify a few steps. Copy the DTR host name again and create the environment variable. For instance, if your DTR host FQDN is `ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com` you would type:
 
 	```powershell
 	PS C:\> $env:DTR_HOST="ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com"
@@ -507,9 +507,9 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 ### <a name="task3.2"></a> Task 3.2: Build and Push Windows Images to Docker Trusted Registry
 ![](./images/windows75.png)
 
-1. CD into the `c:\hybrid-app\netfx-api` directory. 
+1. Change your path to `c:\hybrid-app\netfx-api`. 
 
-	> Note you'll see a `dotnet-api` directory as well. Don't use that directory. That's a .NET Core api that runs on Linux. We'll use that later in the Kubernetes section.
+	> Note that you'll see a `dotnet-api` directory. This can be ignored as it's the .NET Core api that runs on Linux. We'll use that later in the Kubernetes section.
 
 	```powershell
 	PS C:\> cd c:\hybrid-app\netfx-api\
@@ -521,7 +521,7 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 	```powershell
 	PS C:\hybrid-app\netfx-api> docker build -t $env:DTR_HOST/dotnet/dotnet_api .
 	```
-	> Note the final "." in the above command. The "." is the build context, specifically the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
+	> Note the final "." in the above command. The "." is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
 
 	> **Note**: Feel free to examine the Dockerfile in this directory if you'd like to see how the image is being built.
 
@@ -543,7 +543,7 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 
 	> **Note**: It will take a few minutes for your image to build.
 
-4. Log into Docker Trusted Registry
+4. Log into the Docker Trusted Registry
 
 	```powershell
 	PS C:\hybrid-app\netfx-api> docker login $env:DTR_HOST
@@ -552,7 +552,7 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 	Login Succeeded
 	```
 
-5. Push your new image up to Docker Trusted Registry.
+5. Push your new image up to Docker Trusted Registry(DTR).
 
 	```powershell
 	PS C:\hybrid-app\netfx-api> docker push $env:DTR_HOST/dotnet/dotnet_api
@@ -571,7 +571,7 @@ Now that we've moved the app and updated it, we're going to add in a user sign-i
 	latest: digest: sha256:e28b556b138e3d407d75122611710d5f53f3df2d2ad4a134dcf7782eb381fa3f size: 2825
 	```
 
-6. You may check your repositories in the DTR web interface to see the newly pushed image.
+6. Verify your newly pushed image within the DTR web interface.
 
 ### <a name="task3.3"></a> Task 3.3: Deploy the Java web app
 ![](./images/linux75.png)
