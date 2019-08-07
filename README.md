@@ -116,17 +116,17 @@ The Play with Docker (PWD) environment is almost completely set up, but before w
 
 ### <a name="task1.2"></a>Task 1.2: Join a Windows worker node
 
-Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker node. This is done using Docker Swarm.
+Next we are going to add a Windows Server 2016 to the cluster using Docker Swarm.
 
 1. From the main PWD screen click the `UCP` button on the left side of the screen
 
-	> **Note**: Because this is a lab-based install of Docker Enterprise we are using the default self-signed certs. Because of this your browser may display a security warning. It is safe to click through this warning.
+	> **Note**: This Docker Enterprise install uses the default self-signed certs. Because of this, your browser may display a security warning similar to the message below. This message might appear different depending on your web browser. It is safe to 'acknowledge' and proceed.
 	>
 	> In a production environment you would use certs from a trusted certificate authority and would not see this screen.
 	>
 	> ![](./images/ssl_error.png)
 
-2. When prompted enter your username and password (these can be found below the console window in the main PWD screen). The UCP web interface should load up in your web browser.
+2. When prompted enter your username and password, use the credentials that are located below the console window on the main PWD screen. The UCP web interface will open in your web browser.
 
 	> **Note**: Once the main UCP screen loads you'll notice there is a red warning bar displayed at the top of the UCP screen, this is an artifact of running in a lab environment. A UCP server configured for a production environment would not display this warning
 	>
@@ -137,38 +137,48 @@ Let's start by adding our 3rd node to the cluster, a Windows Server 2016 worker 
 
 	![](./images/add_a_node.png)
 
-4. Select node type "Windows", Under the Step 2 section check the box `I have followed the instructions and I'm ready to join my windows node.` Next, copy the text from the `docker swarm join` command from the dark box shown on the `Add Node` screen. Don't select a custom listen or advertise address.
+4. Select node type "Windows". 
+
+	![](./images/add_win_node_1.png)
+
+	Under the Step 2 section check the box `I have followed the instructions and I'm ready to join my windows node.` Next, copy the text from the `docker swarm join` command from the dark box shown on the `Add Node` screen. Don't select a custom listen or advertise address.
+
+	![](./images/add_win_node_2.png)
 
 	> **Note** There is an icon in the upper right corner of the dark box that you can click to copy the text to your clipboard.
 
 	> ![](./images/join_text.png)
 
 
-	> **Note**: You may notice that there is a UI component to select `Linux` or `Windows`on the `Add Node` screen. In a production environment where you are starting from scratch there are [a few prerequisite steps](https://docs.docker.com/install/windows/docker-ee/) to adding a Windows node. However, we've already done these steps in the PWD environment. So for this lab, just leave the selection on `Linux` and move on to step 2
+	> **Note**: You may notice that there is a UI component to select `Linux` or `Windows`on the `Add Node` screen. In a production environment where you are starting from scratch, there are [a few prerequisite steps](https://docs.docker.com/install/windows/docker-ee/) that need to be completed prior to adding Windows node. However, we've already done these steps in the PWD environment. For this lab, just leave the selection on `Linux` and move on to step 2
 
 	![](./images/windows75.png)
 
-5. Switch back to the PWD interface, and click the name of your Windows node. This will connect the web-based console to your Windows Server 2016 Docker Enterprise host.
+5. Return to the PWD interface and click the name of your Windows node. This will 			connect the web-based console to your Windows Server 2016 Docker Enterprise host.
 
-6. Paste the text from Step 4 at the command prompt in the Windows console. (depending on your browser, this can be tricky: try the "paste" command from the edit menu instead of right clicking or using keyboard shortcuts)
+	![](./images/add_win_node_3.png)
+
+6. Paste the text from Step 4 at the command prompt in the Windows console. (depending on 	your browser, this can be tricky: try the "paste" command from the edit menu instead 	of right clicking or using keyboard shortcuts)
+
+	![](./images/add_win_node_4.png)
 
 	You should see the message `This node joined a Swarm as a worker.` indicating you've successfully joined the node to the cluster.
 
-	**Note** If the command failed, ensure that the command was correctly pasted into the Windows console.
+	**Note** If the command failed, verify that the command was correctly entered into the Windows console.
 
-7. Switch back to the UCP server in your web browser and click the `x` in the upper right corner to close the `Add Node` window
+7. Switch back to the UCP server in your web browser and click the `x` in the upper right 	corner to close the `Add Node` window
 
-8. You will be taken back to the UCP Dashboard. In the left menu bar, click Shared Resources, and select Nodes.
+8. You will be taken back to the UCP Dashboard. In the left menu bar, click Shared 	Resources and then select Nodes.
 
 	![](/images/select_nodes.png)
 
-	You should be taken to the `Nodes` screen and will see 4 worker nodes listed at the bottom of your screen.
+	The `Nodes` screen will opeb and you can see 4 `worker` nodes and 1 `manager` listed on your screen.
 
 	Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `Healthy UCP worker`
 	
 	![](./images/node_listing.png)
 
-Congratulations on adding a Windows node to your UCP cluster. Now you are ready to use the worker in either Swarm or Kubernetes. Next up we'll create a few repositories in Docker Trusted registry.
+Congratulations on adding a Windows node to your UCP cluster. Your are now ready to use the worker in either a Swarm or Kubernetes. Next, we'll create a few repositories in Docker Trusted registry.
 
 ### <a name="task1.3"></a>Task 1.3: Create Three DTR Repositories
 
