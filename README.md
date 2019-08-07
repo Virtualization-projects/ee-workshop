@@ -538,11 +538,7 @@ Now that the app has been moved and updated, we'll be adding an user sign-in API
 	```powershell
 	PS C:\hybrid-app\netfx-api> docker build -t $env:DTR_HOST/dotnet/dotnet_api .
 	```
-	> Note the final "." in the above command. The `"."` is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context. Your conaole output should look similar to the below output.
-
-	![](./images/docker_build_win_1.png)
-	...
-	![](./images/docker_build_win_2.png)
+	> Note the final "." in the above command. The `"."` is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context. 
 
 	> **Note**: Feel free to examine the Dockerfile in this directory if you'd like to see how the image is being built.
 
