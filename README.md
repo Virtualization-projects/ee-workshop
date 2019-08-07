@@ -486,7 +486,7 @@ This can be done right from the `Add Application File` edit box on the `UCP Crea
 
 ## <a name="task3"></a>Task 3: Deploy the next version with a Windows node
 
-Now that we've moved the app and updated it, we're going to add an user sign-in API. For fun, to illustrate Docker Enterprise's cross-platform capabilities, we're going to perform this deployment using a Windows container.
+Now that the app has been moved and updated, we'll be adding an user sign-in API. To illustrate Docker Enterprise's cross-platform capabilities, we'll be performing this deployment using a Windows container.
 
 > If your workshop organizer requested a Windows only environment, you can skip ahead to <a href="#task4">Task 4</a>.
 
@@ -496,19 +496,29 @@ Now that we've moved the app and updated it, we're going to add an user sign-in 
 
 1. Because this is a Windows container, it has to be deployed on a Microsoft Windows host. Switch back to the main Play with Docker page and select the name of the Windows worker. 
 
-	First verify that Docker is running - it runs as a background Windows Service:
+	First verify that Docker is `running` - it runs as a background Windows Service. This can be done by the following command:
+
+	```
+	Get-Service docker
+	```
+	![](./images/docker_service_stopped.png)
+
+	If the service is not running, it can be started by the following command:
 
 	```
 	Start-Service docker
 	```
+	![](./images/docker_service_start.png)
 
-	Then clone the repository again onto this host:
+	Next, clone the repository again onto this host:
 
 	```powershell
 	PS C:\> git clone https://github.com/dockersamples/hybrid-app.git
 	```
 
 2. Set an environment variable for the DTR host name. Similar to what you did for the Java app, this will simplify a few steps. Copy the DTR host name again and create the environment variable. For instance, if your DTR host FQDN is `ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com` you would type:
+
+![](./images/dtr_fqdn.png)
 
 	```powershell
 	PS C:\> $env:DTR_HOST="ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com"
@@ -519,19 +529,20 @@ Now that we've moved the app and updated it, we're going to add an user sign-in 
 
 1. Change your path to `c:\hybrid-app\netfx-api`. 
 
-	> Note that you'll see a `dotnet-api` directory. This can be ignored as it's the .NET Core api that runs on Linux. We'll use that later in the Kubernetes section.
-
 	```powershell
 	PS C:\> cd c:\hybrid-app\netfx-api\
 	```
-
 
 2. Use `docker build` to build your Windows image.
 
 	```powershell
 	PS C:\hybrid-app\netfx-api> docker build -t $env:DTR_HOST/dotnet/dotnet_api .
 	```
-	> Note the final "." in the above command. The "." is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context.
+	> Note the final "." in the above command. The `"."` is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context. Your conaole output should look similar to the below output.
+
+	![](./images/docker_build_win_1.png)
+	...
+	![](./images/docker_build_win_2.png)
 
 	> **Note**: Feel free to examine the Dockerfile in this directory if you'd like to see how the image is being built.
 
