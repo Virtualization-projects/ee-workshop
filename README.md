@@ -593,7 +593,7 @@ Now that the app has been moved and updated, we'll be adding an user sign-in API
 ### <a name="task3.3"></a> Task 3.3: Deploy the Java web app
 ![](./images/linux75.png)
 
-1. First we need to update the Java web app so it'll take advantage of the .NET API. Switch back to `worker1` and change directories to the `java-app-v2` directory. Repeat steps 1,2, and 4 from Task 2.2 but add a tag `:2` to your build and pushes:
+1. Firstly, we need to update our Java web app to take advantage of the .NET API. Switch back to `worker1` and change directories to the `java-app-v2` directory. Repeat steps 1,2, and 4 from Task 2.2 but add a tag `:2` to your build and pushes:
 
 	```bash
 	$ docker build -t $DTR_HOST/java/java_web:2 .
