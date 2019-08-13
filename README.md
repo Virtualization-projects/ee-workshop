@@ -2,11 +2,11 @@
 
 Docker Enterprise 3.0 is the first Containers-as-a-Service platform to offer production-level support for the integrated management and security of both Linux and Windows Server Containers. It is also the first platform to support both Docker Swarm and Kubernetes orchestration.
 
-In this lab we'll use a Docker Enterprise 3.0 cluster. You will have an environment that is either Linux only, comprised of Windows and Linux nodes. We'll deploy both a Java web app on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
+In this lab we'll use a Docker Enterprise 3.0 cluster. You will have an environment that is either Linux only, or comprised of Windows and Linux nodes. We'll deploy both a Java web application on Linux and a multi-service application that includes both Windows and Linux components using Docker Swarm. Then, we'll take a look at securing and scaling the application. Finally, we will then deploy the app using Kubernetes.
 
-> **Difficulty**: Intermediate (assumes basic familiarity with Docker and Command Line) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
+> **Difficulty**: **Intermediate** (assumes basic familiarity with Docker and Command Line) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
 
-> **Time**: Approximately 75 minutes
+> **Workshop Time**: Approximately 75 minutes
 
 > **Introduction**:
 >	* [What is the Docker Platform](#intro1)
@@ -43,11 +43,16 @@ In this lab we'll use a Docker Enterprise 3.0 cluster. You will have an environm
 
 ![](./images/pwd_screen.png)
 
-This workshop is only available to people in a pre-arranged workshop. That may happen through a [Docker Meetup](https://events.docker.com/chapters/), a conference workshop that is being led by someone who has made these arrangements, or special arrangements between Docker and your company. The workshop leader will provide you with the URL to a workshop environment that includes [Docker Enterprise Edition](https://www.docker.com/enterprise-edition). The environment will be based on [Play with Docker](https://labs.play-with-docker.com/).
+This workshop is only available to people attending a scheduled Docker workshop. This could be arranged through:
+* [Docker Meetups](https://events.docker.com/chapters/)
+* Conference sessions including this workshop
+* Special arrangements between your company and Docker. 
 
-If none of these apply to you, contact your local [Docker Meetup Chapter](https://events.docker.com/chapters/) and ask if there are any scheduled workshops. In the meantime, you may be interested in the labs available through the [Play with Docker Classroom](training.play-with-docker.com).
+The workshop organizer will provide you with the URL to a workshop environment that includes [Docker Enterprise Edition](https://www.docker.com/enterprise-edition). The environment will be based on [Play with Docker](https://labs.play-with-docker.com/).
 
-There are three main components to the Play With Docker (PWD) interface. 
+If none of these apply to you, contact your local [Docker Meetup Chapter](https://events.docker.com/chapters/) and inquire if there are any scheduled workshops. In the interim, you might be interested in the online labs available through the [Play with Docker Classroom](training.play-with-docker.com) portal.
+
+There are three main components to the Play With Docker (PWD) interface: 
 
 ### 1. Console Access
 Play with Docker provides access to the 4 Docker Enterprise hosts in your Cluster. These machines are:
@@ -56,9 +61,9 @@ Play with Docker provides access to the 4 Docker Enterprise hosts in your Cluste
 * Three Linux-based Docker Enterprise 19.XX Worker nodes
 * A Windows Server 2019-based Docker Enterprise XX.XX Worker Node
 
-> In some cases, your workshop organizer will have requested a Linux only environment. In that case, just skip the Windows sections of the workshop.
+> In some cases, your workshop organizer will have requested a Linux only environment. In this case, feel free skip the Windows sections of the workshop.
 
-By clicking a name on the left, the console window will be connected to that node.
+By selecting the nodes in the left panel of the user interface, the console will connect to that node.
 
 ### 2. Access to your Universal Control Plane (UCP) and Docker Trusted Registry (DTR) servers
 
@@ -76,18 +81,18 @@ Throughout the lab you will be asked to provide either hostnames or login creden
 	For instance if you see `<dtr hostname>` you would actually type something like `ip172-18-0-7-b70lttfic4qg008cvm90.direct.ee-workshop.play-with-docker.com`
 
 
-- When you see the Linux penguin all the following instructions should be completed in your Linux console
+- Wherever n you see the Linux logo, all the following instructions should be completed in your Linux console
 
 	![](./images/linux75.png)
 
-- When you see the Windows flag all the subsequent instructions should be completed in your Windows console. You can skip these sections if you have a Linux only environment.
+- Wherever you see the Windows logo, all the subsequent instructions should be completed in your Windows console. These sections can be skipped if you are working with a Linux environment only.
 
     ![](./images/windows75.png)
 
 ## <a name="intro1"></a>Introduction
 Docker Enterprise provides an integrated, tested and certified platform for apps running on enterprise Linux or Windows operating systems and cloud providers. Docker Enterprise is tightly integrated to the the underlying infrastructure to provide a native, easy to install experience and an optimized Docker environment. Docker Certified Infrastructure, Containers and Plugins are exclusively available for Docker Enterprise with cooperative support from Docker and the Certified Technology Partners.
 
-### <a name="intro2"></a>Overview of Orchestration
+#### <a name="intro2"></a>Overview of Orchestration
 While it is easy to run an application in isolation on a single machine, orchestration allows you to coordinate multiple machines to manage an application, with features like replication, encryption, load-balancing, service discovery and more. If you've read anything about Docker, you have probably heard of Kubernetes and Docker Swarm mode. Docker Enterprise allows you to use either Docker Swarm mode or Kubernetes for orchestration. 
 
 Both Docker Swarm mode and Kubernetes are declarative: you declare your cluster's desired state, and applications you want to run and where, networks, and resources they can use. Docker Enterprise simplifies this by taking common concepts and moving them to the a shared resource.
@@ -108,7 +113,7 @@ The Play with Docker (PWD) environment is almost completely set up, but before w
 
 ### <a name="task 1.1"></a>Task 1.1: Accessing PWD
 
-1. Navigate in your web browser to the URL the workshop organizer provided to you.
+1. Navigate to the provided URL using your favorite browser.
 
 2. Fill out the form, and click `submit`. You will then be redirected to the PWD environment.
 
