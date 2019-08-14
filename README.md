@@ -179,7 +179,7 @@ Next we are going to add a Windows Server 2016 to the cluster using Docker Swarm
 
 	The `Nodes` screen will opeb and you can see 4 `worker` nodes and 1 `manager` listed on your screen.
 
-	Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `Healthy UCP worker`
+	> Initially the new worker node will be shown with status `down`. After a minute or two, refresh your web browser to ensure that your Windows worker node has come up as `Healthy UCP worker`
 	
 	![](./images/node_listing.png)
 
@@ -203,13 +203,15 @@ However, before we create the repositories, we do want to restrict access to the
 
 	![](/images/create_java_user.png)
 
-	Then do the same for a `dotnet_user`.
+	Then do the same for a `dotnet_user`. You should see a similar users as below.
+
+	![](./images/dtr_users_created.png)
 
 4. In the left Menu, select Organizations
 
 	![](./images/organization_screen.png)
 
-5. Press the `New organization` button, name it java, and click save.
+5. Press the `New organization` button, name it `java`, and click save.
 
     ![](./images/java_organization_new.png)
 
@@ -221,13 +223,13 @@ However, before we create the repositories, we do want to restrict access to the
 
 	![](./images/add_repository_java.png)
 
-7. Name the repository `java_web`, provide a Description and click `Save`.
-
-	![](./images/create_repository.png)
+7. Name the repository `java_web`. Provide a Description and click `Save`.
 
 	> Note the repository is listed as "Public" but that means it is publicly viewable by users of DTR. It is not available to the general public.
 
-8. Now it's time to create a team so you can restrict access to who administers the images. Select the Members Menu Tab and Press `Add user` button. Start typing in java in the Search by Username box.. Select the `java_user` when it comes up.
+	![](./images/create_repository.png)
+
+8. Now it's time to create a team so you can restrict access to who administers the images. Select the Members Menu Tab and Press `Add user` button. Start typing in java in the Search by Username box.. Select the `java_user` when it comes up. Select `Save`.
 
 	![](./images/add_java_user_to_organization.png)
 
@@ -241,15 +243,15 @@ However, before we create the repositories, we do want to restrict access to the
 
 	![](./images/team_with_user.png)
 
-11. Next select the `web` team and select the `Repositories` tab and click `New repository`. Select `Add Existing repository` and click in the `Repository Name` field and choose the `java_web`repository. You'll see the `java` account is already selected. Then select `Read/Write` permissions so the `web` team has permissions to push images to this repository. Finally click `Save`.
+11. Next select the `web` team and select the `Repositories` tab and click `New repository`. Select `Add Existing repository` and click in the `Repository Name` field and choose the `java_web` repository. You'll see the `java` account is already selected. Then select `Read/Write` permissions so the `web` team has permissions to push images to this repository. Finally click `Save`.
 
 	![](./images/add_java_web_to_team.png)
 
-12. Now add a `New` repository also owned by the web team and call it `database`. This can be done directly from the web team's `Repositories` tab by clicking the `New repository` button, select Add `New`repository and name the repository `database`. Be sure to grant `Read/Write` permissions for this repository which will be part of the `web` team as well.
+12. Now add a `New` repository also owned by the web team and call it `database`. This can be done directly from the web team's `Repositories` tab by clicking the `New repository` button, select Add `New` repository and name the repository `database`. Be sure to grant `Read/Write` permissions for this repository which will be part of the `web` team as well.
 
 	![](./images/add_repository_database.png)
 
-13. Repeat 4-11 above to create the same structure in the `dotnet` organization. First, create the `api` Team, add the `dotnet_user` as member to to the `api`Team and create the repository `dotnet_api`. Grant `read/write` permissions for the `dotnet_api` repository to the `api` team.
+13. Repeat 4-11 above to create the same structure in the `dotnet` organization. First, create the `api` Team, add the `dotnet_user` as member to to the `api` Team and create the repository `dotnet_api`. Grant `read/write` permissions for the `dotnet_api` repository to the `api` team.
 
 14. From the main DTR page, click Repositories, you will now see all three repositories listed.
 	
@@ -402,7 +404,7 @@ There will be quite a bit of output. The Dockerfile describes a two-stage build.
 	docker push $DTR_HOST/java/database
 	```
 
-10. In your web browser head back to your DTR server and click `Tags` from the horizontal menu in your `database` repository to see the details of the repository. Notice that your newly pushed image is now on your DTR.
+10. In your web browser head back to your DTR server, select your `java/database` repository and click `Tags` from the horizontal menu. Notice that your newly pushed image is now in your DTR.
 
 
 ### <a name="task2.3"></a> Task 2.3: Deploy the Web App using UCP
