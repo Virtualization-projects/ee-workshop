@@ -416,7 +416,9 @@ The next step is to run the app in Swarm. **Remember**, the application has two 
 
 	![](./images/pwd_screen.png)
 
-2.  There's a lot of information on this page about managing the cluster. You can take a moment to explore around and get famiiar with the layout. Next, click on `Swarm` and select `Secrets`.
+2.  There's a lot of information on this page about managing the cluster. You can take a moment to explore around and get familiar with the layout. 
+
+	Next, click on `Swarm` and select `Secrets`.
 
 	![](./images/ucp_secret_menu_1.png)
 
@@ -431,7 +433,7 @@ The next step is to run the app in Swarm. **Remember**, the application has two 
 
 5. Repeat step 4 but with a new network called `front-tier`.
 
-6. Now we're going to use the fast way to create your application using `Stacks`. In the left panel, click `Shared Resources`, `Stacks` and then `Create Stack` in the upper right corner.
+6. Now we're going to use the fast way to create your application using `Stacks`. In the left panel, click `Shared Resources`-> `Stacks` and then `Create Stack` in the upper right corner.
 
 	![](./images/ucp_shared_stacks.png)
 
@@ -446,7 +448,7 @@ It will look something like this:
 
 This can be done right from the `Add Application File` edit box on the `UCP Create Application` form. 
 
-    ```yaml
+```yaml
     version: "3.3"
 
     services:
@@ -479,15 +481,21 @@ This can be done right from the `Add Application File` edit box on the `UCP Crea
     secrets:
       mysql_password:
         external: true
-    ```
+```	
 
-	Then click `Done` in the lower right.
+Then click `Create` in the lower right corner of the window.
+
+![](./images/ucp_java_deploy.png)
+
+Once deployed, click `Done`.
+
+> You might see a websocket error, but the stack is still being created. You can safely ignore this error.
 
 8. Congratulations! You've deployed your first app! Now it's time to go and test the functionality. Open a new tab or browser window and enter the `UCP Hostname` and append `:8080/java-web` to the end of the URL. 
 
-`E.g. ip172-18-0-21-baeqqie02b4g00c9skk0.direct.ee-beta2.play-with-docker.com:8080/java-web` 
+`E.g. http://ip172-18-0-21-baeqqie02b4g00c9skk0.direct.ee-beta2.play-with-docker.com:8080/java-web` 
 
-	![](./images/java-web1.png)
+![](./images/java-web1.png)
 
 9. Delete your `java_web` application stack.
 
@@ -505,53 +513,54 @@ Now that the app has been moved and updated, we'll be adding an user sign-in API
 
 	First verify that Docker is `running` - it runs as a background Windows Service. This can be done by the following command:
 
-	```
+	```powershell
 	Get-Service docker
 	```
 	![](./images/docker_service_stopped.png)
 
-	If the service is not running, it can be started by the following command:
+	If the service is not running, it can be started with the following command:
 
-	```
-	Start-Service docker
+	```powershell
+		Start-Service docker
 	```
 	![](./images/docker_service_start.png)
 
 	Next, clone the repository again onto this host:
 
-	```powershell
-	PS C:\> git clone https://github.com/dockersamples/hybrid-app.git
+	```
+		PS C:\> git clone https://github.com/dockersamples/hybrid-app.git
 	```
 
 2. Set an environment variable for the DTR host name. Similar to what you did for the Java app, this will simplify a few steps. Copy the DTR host name again and create the environment variable. For instance, if your DTR host FQDN is `ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com` you would type:
 
 ![](./images/dtr_fqdn.png)
 
-	```powershell
+```
 	PS C:\> $env:DTR_HOST="ip172-18-0-17-bajlvkom5emg00eaner0.direct.ee-beta2.play-with-docker.com"
-	```
+```
 
 ### <a name="task3.2"></a> Task 3.2: Build and Push Windows Images to Docker Trusted Registry
 ![](./images/windows75.png)
 
 1. Change your path to `c:\hybrid-app\netfx-api`. 
 
-	```powershell
+```
 	PS C:\> cd c:\hybrid-app\netfx-api\
-	```
+```
 
 2. Use `docker build` to build your Windows image.
 
-	```powershell
-	PS C:\hybrid-app\netfx-api> docker build -t $env:DTR_HOST/dotnet/dotnet_api .
 	```
-	> Note the final "." in the above command. The `"."` is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context. 
+		PS C:\hybrid-app\netfx-api> docker build -t $env:DTR_HOST/dotnet/dotnet_api .
+	```
+	
+	> **Note** the final "." in the above command. The `"."` is the build context, specific to the current directory. One of the most common mistakes even experienced users make is leaving off the build context. 
 
 	> **Note**: Feel free to examine the Dockerfile in this directory if you'd like to see how the image is being built.
 
 	Your output should be similar to what is shown below
 
-	```powershell
+	```
 	PS C:\hybrid-app\netfx-api> docker build -t $env:DTR_HOST/dotnet/dotnet_api .
 
 	Sending build context to Docker daemon  415.7kB
@@ -569,7 +578,7 @@ Now that the app has been moved and updated, we'll be adding an user sign-in API
 
 4. Log into the Docker Trusted Registry
 
-	```powershell
+	```
 	PS C:\hybrid-app\netfx-api> docker login $env:DTR_HOST
 	Username: dotnet_user
 	Password: user1234
@@ -578,7 +587,7 @@ Now that the app has been moved and updated, we'll be adding an user sign-in API
 
 5. Push your new image up to Docker Trusted Registry(DTR).
 
-	```powershell
+	```
 	PS C:\hybrid-app\netfx-api> docker push $env:DTR_HOST/dotnet/dotnet_api
 	The push refers to a repository [<dtr hostname>/dotnet/dotnet_api]
 	5d08bc106d91: Pushed
@@ -661,18 +670,30 @@ Now that the app has been moved and updated, we'll be adding an user sign-in API
 
 ## <a name="task4"></a>Task 4: Deploy to Kubernetes
 
-Now that we have built, deployed and scaled a multi OS application to Docker Enterprise using Swarm mode for orchestration, let's learn how to use Docker Enterprise with Kubernetes.
+Now that we have built, deployed and scaled a multi OS application to Docker Enterprise using Swarm mode for orchestration, let's look at how to use Docker Enterprise with Kubernetes.
 
-Docker Enterprise lets you choose the orchestrator to use to deploy and manage your application, between Swarm and Kubernetes. In the previous tasks we have used Swarm for orchestration. In this section we will deploy the application to Kubernetes and see how Docker Enterprise exposes Kubernetes concepts.
+Docker Enterprise lets you choose the orchestrator used to deploy and manage your application between Swarm and Kubernetes. In the previous tasks we've used Swarm for our  orchestration. In this section we will deploy the application to Kubernetes and see how Docker Enterprise exposes Kubernetes concepts.
 
-Before moving forward we need to make sure that our cluster worker nodes can schedule Kubernetes workloads. If go to the nodes section, you'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
-![](./images/node_types.png)
+Before moving forward we need to make sure that our cluster worker nodes can schedule Kubernetes workloads. Navigate to the nodes section:
 
-Click on the `worker2` node and change it's orchestration type to `mixed` using the gear icon on the top right corner. Repeat the same step for `worker3`.
-![](./images/node_mixed.png)
+* `UCP > Shared Resources > Nodes`
+
+	![](./images/ucp_nodes.png)
+
+	You'll notice that the scheduler type of `worker2` and `worker3` is set to Swarm. 
+
+	![](./images/node_types.png)
+
+	Click on the `worker2` node and change it's orchestration type to `mixed` using the gear icon on the top right corner and click `Save`. 
+	
+	Repeat the same step for `worker3`.
+	
+	![](./images/ucp_node_setting.png)
+
+	![](./images/node_mixed.png)
 
 
-Now your cluster is configured to run both Kuberentes and Swarm workloads
+	Now your cluster is configured to run both Kuberentes and Swarm workloads
 
 
 ### <a name="task4.1"></a>Task 4.1: Build .NET Core app instead of .NET
@@ -748,13 +769,17 @@ For now Kubernetes does not support Windows workloads in production, so we will 
 ### <a name="task4.2"></a>Task 4.2: Examine the Docker Compose File
 ![](./images/linux75.png)
 
-Docker Enterprise lets you deploy native Kubernetes applications using Kubernetes deployment descriptors, by pasting the yaml files in the UI, or using the `kubectl` CLI tool.
+Docker Enterprise lets you deploy Kubernetes applications natively using the Kubernetes deployment descriptors. This can be done by providing the yaml files in the UI, or using the `kubectl` CLI tool.
 
-However many developers use `docker-compose` to build and test their application, and having to create Kubernetes deployment descriptors as well as maintaining them in sync with the Docker Compose file is tedious and error prone.
+However, many developers choose `docker-compose` to build and test their applications. Having to create Kubernetes deployment descriptors as well as maintaining them in sync with the Docker Compose file, is a  tedious and error prone process.
 
-In order to make life easier for developers and operations, Docker Enterprise lets you deploy an application defined with a Docker Compose file as a Kubernetes workloads. Internally Docker Enterprise uses the official Kubernetes extension mechanism by defining a [Custom Resource Definition](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/) (CRD) defining a stack object. When you post a Docker Compose stack definition to Kubernetes in Docker Enterprise, the CRD controller takes the stack definition and translates it to Kubernetes native resources like pods, controllers and services.
+In order to simply developent and operations tasks, Docker Enterprise lets you deploy an application defined with a Docker Compose file as a Kubernetes workload. Internally Docker Enterprise uses the official Kubernetes extension mechanism by defining a [Custom Resource Definition](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/) (CRD) defining a stack object. When you post a Docker Compose stack definition to Kubernetes in Docker Enterprise, the CRD controller takes the stack definition and translates it to Kubernetes native resources like pods, controllers and services.
 
-We'll use a Docker Compose file to instantiate our application, and it's the same file as before, except that we will switch the .NET Docker Windows image with the .NET Core Docker Linux image we just built. One other change we have to make is to create a new secret `mysql-secret` with `DockerCon!!!` as the password. Follow the instructions above but use `-` instead of `_` because Kubernetes doesn't allow underscores.
+We'll use a Docker Compose file to instantiate our application. This is the same file you used in a prior task, with a few changes. 
+* We will switch the .NET Docker Windows image with the .NET Core Docker Linux image we just built. 
+* Create a new secret `mysql-secret` with `DockerCon!!!` as the password. 
+
+Follow the instructions above but use `-` instead of `_` as Kubernetes doesn't allow underscores.
 
 Let's look at the Docker Compose file in `app/docker-stack.yml`.
 
@@ -819,34 +844,38 @@ secrets:
 ### <a name="task4.3"></a>Task 4.3: Deploy to Kubernetes using the Docker Compose file
 ![](./images/linux75.png)
 
-Login to UCP, go to Shared resources, Stacks.
+Login to UCP, and select `Shared resources >  Stacks`.
 
 ![](./images/kube-stacks.png)
 
-Click create Stack. Fill name: hybrid-app, mode: Kubernetes Workloads, namespace: default.
+Click **`Create Stack`**. Fill name: **`hybrid-app`**, mode: **`Kubernetes Workloads`**, namespace: **`Default`**.
 
-![](./images/kube-create-stack.png)
+![](./images/k8s_stack.png)
 
-You should see the stack being created.
+To see the stack being created, navigate to `Kubernetes > Pods`. You should see the stack being created.
+
+![](./images/kube_pods.png)
 
 ![](./images/kube-stack-created.png)
 
-Click on it to see the details.
+Click on the `hybrid-app` stack to see the details.
+
+![](./images/ucp_stack.png)
 
 ![](./images/kube-stack-details.png)
 
 ### <a name="task4.4"></a>Task 4.4: Verify the app
 ![](./images/linux75.png)
 
-Go to Kubernetes / Pod. See the pods being deployed.
+Navigate to `Kubernetes > Pod` to verify the pods are being deployed.
 
 ![](./images/kube-pods.png)
 
-Go to Kubernetes / Controllers. See the deployments and ReplicaSets.
+Navigate to `Kubernetes > Controllers` to verify the deployments and ReplicaSets.
 
 ![](./images/kube-controllers.png)
 
-Go to Kubernetes / Load Balancers. See the Kubernetes services that have been created.
+Navigate to `Kubernetes > Load Balancers` to verify the Kubernetes services that have been created.
 
 ![](./images/kube-lb.png)
 
@@ -854,15 +883,15 @@ Click on `java-web-published` to the the details of the public load balancer cre
 
 ![](./images/kube-java-lb.png)
 
-The `Node Port` 32770 is exposed. Note this is different than previous implementations because of Kubernetes NodePort range limitations. Open a new browser tab, paste in the `UCP Hostname` from the Play with Docker landing page and add `:32770/java-web/` at the end of the url. You should be led to the running application.
+The `Node Port` 32770 is exposed. Note that this is different than previous implementations due to Kubernetes NodePort range limitations. Open a new browser tab, paste in the `UCP Hostname` from the Play with Docker landing page and add `:32770/java-web/` at the end of the url. You should be led to the running application.
 
 ![](./images/kube-running-app.png)
 
 ## <a name="task5"></a>Task 5: Image Scanning
 
-Security is crucial for all organizations. And it is a complicated topic, too in-depth to go through in detail here. We're going to look at just one of the features that Docker Enterprise has to help you build a secure software supply chain: Image Scanning which checks for vulnerabilities in your images
+Security is crucial for all organizations and covers a wide range of topics. Far too many to cover them in-depth in this workshop. We'll be examining just one of the features that Docker Enterprise provides to assist you in building a secure software supply chain: `Image Scanning` which checks for vulnerabilities in your images.
 
-1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, turn on scanning now so DTR downloads the latest database of security vulnerabilities. In the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and click `Enable Online Syncing` to start the download of database of security vulnerabilities.
+1. If you turned on security in Task 1.3 step 14 you can skip this step. Otherwise, proceed to enable scanning now to allow DTR to download the latest security and vulnerabilities database. On the left-hand panel, select `System` and then the `Security` tab. Select `ENABLE SCANNING` and click `Enable Online Syncing` to start the download of database of security vulnerabilities.
 
 
 	![](./images/scanning-activate.png)
@@ -874,24 +903,26 @@ Security is crucial for all organizations. And it is a complicated topic, too in
 
 	![](./images/java-scanned.png)
 
-	You see that in fact there are a lot of vulnerabilities! That's because we deliberately chose an old version of the `tomcat` base image. Also, most operating systems and many libraries contain some vulnerabilities. The details of these vulnerabilities and when they come into play are important. You can select `View details` to get more information. You can see which layers of your image introduced vulnerabilities.
+	> Note all the vulnerabilities found! This is due to  deliberately using an old version of the `tomcat` base image. 
+	
+	Most operating systems and many libraries contain some vulnerabilities. The details of these vulnerabilities and when they come into play are important. You can select `View details` to get additional information. Vulnerabilities within your image layers can be identified here. 
 
  	![](./images/layers.png)
 
-	And by selecting `Components` you can see what the vulnerabilities are and what components introduced the vulnerabilities. You can also select the vulnerabilities and examine them in the [Common Vulnerabilities and Exploits database](https://cve.mitre.org/).
+	By selecting `Components`, you can see what the vulnerabilities are and what components introduced the vulnerabilities. You can also select the vulnerabilities and examine them in the [Common Vulnerabilities and Exploits database](https://cve.mitre.org/).
 
  	![](./images/cves.png)
 
- 3. One way you can reduce your vulnerabilities is to identify where the vulnerabilities are coming from. For instance, you can see that in `java_web:latest`, 1 Critical and 9 Major issues were introduced with the Spring Framework. Time to upgrade that framework! Of course, upgrading the app is out of scope for this workshop, but you can see how it would give you the information you need to mitigate vulnerabilities.
+ 3. Another way reduce your vulnerabilities is to identify the vulnerability origin. For example, you can see that in `java_web:latest`, 1 Critical and 9 Major issues were introduced with the Spring Framework. Time to upgrade that framework! Of course, upgrading the app is out of scope for this workshop, but you can see how this would give you the needed information to mitigate vulnerabilities.
  
- 4. You can also choose newer base images. For instance, you can go back to the Dockerfile in the `~/hybrid-app/java-app` directory, and change the second base image to `9.0.13-jre11-slim`. Slim images in official images are generally based on lighter-weight operating systems like `Alpine Linux` or `Debian`, which have reduced attack space. Then check the scanning again (this may again take 5-10 minutes). You'll still see vulnerabilities, but far fewer.
+ 4. You can also choose newer base images. For example, you can revisit to the Dockerfile in the `~/hybrid-app/java-app` directory, and change the second base image to `9.0.13-jre11-slim`. Slim images in official images are generally based on lighter-weight operating systems like `Alpine Linux` or `Debian`, which have reduced attack vector. Then check the scanning again (this may again take 5-10 minutes). You might still see some vulnerabilities, however, there should be fewer.
 
-5. Enable Image Scanning of images automatically. Select a repository, such as `java/java_web`, `Settings` tab, select the Image Scanning section, and Enable `On Push`. Every time a new image is pushed to this repository a new image scan is initiated.
+5. To enable scanning of images automatically, select a repository. Navigate to the `Settings` tab and select `On Push` in the `Image Scanning` section. This will initiate a scan every time a new image is pushed to this repository.
 
 	![](./images/on_push_scan.png)
 
 
-6. DTR also allows you to [Sign Images](https://docs.docker.com/datacenter/dtr/2.4/guides/user/manage-images/sign-images/) and [Create promotion policies](https://docs.docker.com/datacenter/dtr/2.4/guides/user/create-promotion-policies/) which prevent users from using images in production that don't meet whatever criteria you set, including blocking images with critical and/or major vulnerabilities.
+6. DTR also allows you to [Sign Images](https://docs.docker.com/datacenter/dtr/2.4/guides/user/manage-images/sign-images/) and [Create promotion policies](https://docs.docker.com/datacenter/dtr/2.4/guides/user/create-promotion-policies/) which prevent users from using images in production that don't meet your criteria,  including blocking images with critical and/or major vulnerabilities.
 
 ## Common Issues
 
