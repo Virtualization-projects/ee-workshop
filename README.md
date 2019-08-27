@@ -968,7 +968,7 @@ secrets:
 
 3. Navigate to `Kubernetes > Load Balancers` to verify the Kubernetes services that have been created.
 
-![](./images/kube-lb.png)
+![](./images/k8s_lb.jpg)
 
 4. Click on `java-web-published` to the the details of the public load balancer created for the Java application.
 
