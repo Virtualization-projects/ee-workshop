@@ -9,19 +9,20 @@ Suggested workshop order:
 * If running in conjunction with the [Docker Enterprise workshop](README.md) you can switch over and run Task 1 in that workshop to setup your Docker Enterprise environment.
 * After completing Task 1 in the Docker Enterprise workshop you can return to this lab and complete Task XX - XX to push and deploy applications to your cluster.
 
->**System Requirements**
+**System Requirements**
 
 
->  Docker Desktop Enterprise installed on your laptop with internet access to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
-> * You will also need a code editor. Instructions here demonstrate the use of [Microsoft Visual Studio Code (vscode)](https://code.visualstudio.com/download), but any code editor should work.
->   * No knowledge of the code syntax is assumed.
->   * Some steps demonstrate the use of the [Docker plugin](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.
+  Docker Desktop Enterprise installed on your laptop with internet access to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
+ * You will also need a code editor. Instructions here demonstrate the use of [Microsoft Visual Studio Code (vscode)](https://code.visualstudio.com/download), but any code editor should work.
+   * No knowledge of the code syntax is assumed.
+   * Some steps demonstrate the use of the [Docker plugin](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.
+   * **The Docker Desktop Enterprise download is approximately 1.8 GB so please download and install before the workshop**
 
 **Windows**
 > **Windows 10: Docker Desktop requires Hyper-V features utilizing Windows 10 Pro or Enterprise to successfully install it.**
 >   
-* [Download Docker Desktop Enterprise for Windows 10](https://docs.docker.com/ee/desktop/admin/install/windows/)
-* Windows 10 Pro or Enterprise
+> * [Download Docker Desktop Enterprise for Windows 10](https://docs.docker.com/ee/desktop/admin/install/windows/)
+> * Windows 10 Pro or Enterprise
 
 
 **Mac**
@@ -30,9 +31,9 @@ Suggested workshop order:
 > * Mac Hardware must be a 2010 or newer model
 
 
-> **Difficulty**: Intermediate (assumes basic familiarity with Docker) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
+ **Difficulty**: Intermediate (assumes basic familiarity with Docker) If you're looking for a basic introduction to Docker, check out [https://training.play-with-docker.com](https://training.play-with-docker.com)
 
-> **Time**: Approximately XX minutes
+ **Time**: Approximately XX minutes
 
 > **Introduction**:
 >	* [What is the Docker Enterprise Platform](#intro1)
@@ -44,12 +45,12 @@ Suggested workshop order:
 > **Tasks**:
 > * Using Docker Desktop Enterprise
 >   * [Task 1: Configure Docker Desktop Enterprise](#task1)
->     * [Task 1.1: Admin settings](#task1.1) 
->     * [Task 1.2: Enable Kubernetes](#task1.2)
-#>     * [Task 1.3: Use Buildkit](#task1.3)
-#>       * _daemon.json_
+>     * [Task 1.1: Launch Docker Desktop Enterprise](#task1.1)
+>     * [Task 1.2: Admin settings](#task1.2) 
+>     * [Task 1.3: Enable Kubernetes](#task1.3)
+>     * [Task 1.4: Use Buildkit](#task1.4)
 >   * [Task 2: Create an Application Template](#task2)
->     * [Task 2.1: Clone the Demo Repo](#task2.1)
+>     * [Task 2.1: Choose a Template](#task2.1)
 >     * [Task 2.2: Customize the Template Settings](#task2.2)
 >     * [Task 2.3: Add a Custom Template Repository](#task2.3)
 >   * [Task 3: Develop an Application with Docker Desktop](#task3)
@@ -104,12 +105,49 @@ Kubernetes is part of Docker Enterprise 3.0 in both Docker Desktop Enterprise an
 ## <a name="task1"></a>Task 1: Configure Docker Desktop Enterprise
 Docker Desktop Enterprise installation comes pre-configured with administration tools. The admin settings enable administrators to configure Docker Desktop for developer teams. We will explore some of the administration settings in this section.
 
-### <a name="task 1.1"></a>Task 1.1: Admin Settings
+### <a name="task 1.1"></a>Task 1.1: Launch Docker Desktop Enterprise
+The first time you launch Docker Desktop Enterpirse it will prompt you for a license file. You can install the license file directly through the prompt or manually based on your Operating System
+
+**Mac**
+
+Install the Docker Desktop Enterprise (DDE) license file at the following location:
+
+  `/Library/Group Containers/group.com.docker/docker_subscription.lic`
+
+**Windows**
+
+Install the Docker Desktop Enterprise (DDE) license file at the following location for Windows users:
+
+  `%ProgramData%\DockerDesktop\docker_subscription.lic`
+
+
+### <a name="task 1.1"></a>Task 1.2: Admin Settings
+
+System administrators can configure Docker Desktop Enterprise (DDE) settings, specify and lock configuration parameters to create a standardized development environment based on the developers operating systems.
+
 * Show admin-settings.json (lockable settings)
-  * Windows location: `??`
+  * Windows location: `\%ProgramData%\DockerDesktop\admin-settings.json` which defaults to `C:\ProgramData\DockerDesktop\admin-settings.json` **Must have Administrator privelage to edit this file**
 	* Mac location: `/Library/Application\ Support/Docker/DockerDesktop`
+
+The `admin-settings.json` allows the configuration of DDE settings. Each configuration can be configured with a default value and whether this value is locked for users or not. The configurations include:
+
+ * `proxy` allow users to change the proxy settings
+ * `filesharingDirectories` Which directories are shared with Docker Desktop
+ * `CPU` number of CPU cores
+ * `memoryMib` amount of memory allocated to Docker Desktop
+ * `dataFolder` Where Docker stores date
+ * `diskSizeMib` amount of disk space allocated to Docker Desktop of for images, volumes, etc
+ * `swamMib` amount of swamp memory for Docker Desktop
+ * `kubernetes` enable Kubernetes
+ * `showSystemContainers` Shows containers running in the background
+
+1. Navigate to the `admin-settings.json` location based on your Operating System. See above for the location for Mac or Windows.
+2. Using your favorite editor, open the `admin-settings.json` file and review the available configurations.
+
+The `dockerdesktop-admin` tool allows System Administators to manage DDE applications version packs from the command line.
+
+**Mac**
 * Show dockerdesktop-admin tool
-  * Windows location: `??`
   * Mac location: `/Applications/Docker.app/Contents/Resources/bin`
   * `sudo ./dockerdesktop-admin --help`
     * `sudo ./dockerdesktop-admin app uninstall` to remove DDE and VPs (do not run!)
@@ -117,22 +155,13 @@ Docker Desktop Enterprise installation comes pre-configured with administration 
   * `sudo ./dockerdesktop-admin version-pack install <path to ddvp>`
 	* Note that Desktop needs to be stopped to add a Version Pack
 
-The `admin-settings.json` allows the configuration of settings. Each configuration can be configured with a default value and whether this value is locked for users or not. The configurations include:
+**Windows**
+* Show dockerdesktop-admin tool
+  * Windows location: `??`
+  * **Windows docker-desktop examples**
 
- * proxy: allow users to change the proxy settings
- * filesharingDirectories: Which directories are shared with Docker Desktop
- * CPU: number of CPU cores
- * memoryMib: amount of memory allocated to Docker Desktop
- * dataFolder: Where Docker stores date
- * diskSizeMib: amount of disk space allocated to Docker Desktop of for images, volumes, etc
- * swamMib: amount of swamp memory for Docker Desktop
- * kubernetes: enable Kubernetes
- * showSystemContainers: Shows containers running in the background
 
-1. Navigate to the `admin-settings.json` location based on your Operating System. See above for the location for Mac or Windows.
-2. Using your favorite editor, open the `admin-settings.json` file and review the available configurations.
-
-### <a name="task1.2"></a>Task 1.2: Enable Kubernetes
+### <a name="task1.2"></a>Task 1.3: Enable Kubernetes
 
 Enabling Kubernetes in Docker Desktop only requires a single click.
 
@@ -141,21 +170,26 @@ Enabling Kubernetes in Docker Desktop only requires a single click.
 1. Open Docker Desktop Enterprise -> Settings
 2. Switch to the Kubernetes Tab
 3. Check the `Enable Kubernetes` box
+4. Click Apply. This will take a couple minutes depending on the performance of your computer
 
 ![](./images/kube_enable.png)
 
+5. Run the Kubernetes Cluster creation in the background and will be ready once the Kubernetes status turns green
+![](./images/kube_run_background.png)
+
 Congratulations! Docker Desktop Enterprise is now ready to deploy applications to use either Swarm or Kubernetes.
 
-## <a name="task2"></a>Task 2: Create an Application Template
-In this section, we will explore the capabilities of Application Templates. Application Templates are pre-configured application designs. Docker Desktop comes with the option to use a set of pre-configured templates or custom applications.
+### <a name="task1.2"></a>Task 1.4: Use Buildkit
 
-<!-- ### <a name="task1.3"></a>Task 1.3: Use Buildkit
-
-Next up we'll Buildkit is great because BLAH...JIM TO ADD
+**Jim** can you provide more background what you need here?
 
 By default, Docker Desktop uses Build.XX. Buildkit is not required for any exercises in this workshop but we will go ahead and enable it so you can see it in action in case you want to explore advanced build actions on your own.
 
-1. Open daemon.json
+1. Right Click Docker Desktop Enterprise -> Preferences
+2. Open the `Deamon` Tab
+3. Switch to the `Advanced Tab` This is the Docker Daemon configuration file `daemon.json` 
+4. Delete the existing configuration
+5. Copy and paste the `daemon.json` configuration below
 
 ```json
 {
@@ -164,12 +198,14 @@ By default, Docker Desktop uses Build.XX. Buildkit is not required for any exerc
   "features": { "buildkit": true }
 }
 ```
+5. Click the `Apply & Restart` button
 
-## <a name="task2"></a>Task 2: 
+Docker Desktop Enterprise is now running with Buildkit enabled.
 
-## Common Issues
+## <a name="task2"></a>Task 2: Create an Application Template
 
-* Confirm that you are setting the environmental variable DTR_HOST to the DTR hostname. -->
+In this section, we will explore the capabilities of the DDE Application Designer. The Application Designer comes with a librbary of pre-configured application templates. The Apllication Designer is a visual designer enabling developers to create Docker based applications.  Next, we will select a template, scaffold (build), run, and modify the application template.
+
 
 ## Conclusion
 
