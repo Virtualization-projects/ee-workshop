@@ -204,8 +204,53 @@ Docker Desktop Enterprise is now running with Buildkit enabled.
 
 ## <a name="task2"></a>Task 2: Create an Application Template
 
-In this section, we will explore the capabilities of the DDE Application Designer. The Application Designer comes with a librbary of pre-configured application templates. The Apllication Designer is a visual designer enabling developers to create Docker based applications.  Next, we will select a template, scaffold (build), run, and modify the application template.
+In this section, we will explore the capabilities of the DDE Application Designer. The Application Designer comes with a librbary of pre-configured application templates. The Apllication Designer is a visual designer enabling developers to create Docker based applications.  
 
+### <a name="task2.2"></a>Task 2.1: Choose a Template
+
+Next, we will explore the Application Designer and learn how to design a new application. When we create a new application we are provided the choice to use a template which contains preconfigured applications or define a custom applications.
+
+1. Click on Docker Desktop -> `Design new application`
+
+![](./images/app-design-choose.png)
+
+2. Select `Choose Template`
+
+3. Choose the `Flask/ NGINX / MYSQL application`
+
+![](./images/choose-application-template.png)
+
+### <a name="task2.2"></a>Task 2.2: Customize Template Settings
+
+Customize the default settings of the `Flask/ NGINX / MYSQL application` template
+
+1. Remove port `8080` from Flask and leave blank as we don't want the backend to communicate directly to the internet.
+
+2. Change the port of the NGINX Proxy from port `80` --> `8080` so now the NGINX proxy is handeling routing of traffic to the backend service.
+
+![](./images/customize-application-template.png)
+
+### <a name="task2.3"></a>Task 2.3: Add a Custom Template Repository
+
+
+### <a name="task2.4"></a>Task 2.4: Scaffold the Application Template
+### <a name="task2.5"></a>Task 2.5: Start the Application
+### <a name="task2.6"></a>Task 2.6: Live Code Changes
+### <a name="task2.7"></a>Task 2.7: Customize the Application 
+### <a name="task2.8"></a>Task 2.8: Deploy the Application on Kubernetes
+
+## <a name="task4"></a>Task 4: Connecting to Docker Enterprise UCP and DTR
+### <a name="task4.2"></a>Task 4.1: Client Bundles
+### <a name="task4.2"></a>Task 4.2: Docker Context
+
+## <a name="task5"></a>Task 5: Push to DTR
+### <a name="task5.1"></a>Task 5.1: Push Images to DTR
+### <a name="task5.2"></a>Task 5.2: Bundle the Application
+### <a name="task5.3"></a>Task 5.3: BPush Docker App to DTR
+
+## <a name="task5"></a>Task 6: Deploy to UCP
+### <a name="task6.1"></a>Task 5.1: Deploy to Swarm
+### <a name="task6.2"></a>Task 5.2: Deploy to Kubernetes
 
 ## Conclusion
 
