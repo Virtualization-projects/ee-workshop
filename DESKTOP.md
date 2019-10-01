@@ -226,16 +226,44 @@ Customize the default settings of the `Flask/ NGINX / MYSQL application` templat
 
 1. Remove port `8080` from Flask and leave blank as we don't want the backend to communicate directly to the internet.
 
-2. Change the port of the NGINX Proxy from port `80` --> `8080` so now the NGINX proxy is handeling routing of traffic to the backend service.
+2. Change the port of the NGINX Proxy from port `80` --> `8081` so now the NGINX proxy is handeling routing of traffic to the backend service.
 
 ![](./images/customize-application-template.png)
 
 ### <a name="task2.3"></a>Task 2.3: Add a Custom Template Repository
-
+??
 
 ### <a name="task2.4"></a>Task 2.4: Scaffold the Application Template
+
+The scaffoloding of the template copies the all the necessary Dockerfiles, docker-compose, and application specific files locally to DDE. Once all the files have been copied locally, DDE then builds the images and prepares them for use.
+
+1. Name the Application
+
+2. Change the location of Scaffolded project
+
+3. Click `Scaffold`
+
+![](./images/name-application-template.png)
+
 ### <a name="task2.5"></a>Task 2.5: Start the Application
+
+Once the `Scaffold` has complete we have the option to `Run Application`
+
+1. Click `Run Application`
+
+The log output displays `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer.
+
 ### <a name="task2.6"></a>Task 2.6: Live Code Changes
+
+Next, view the project which was `Scaffold` on to our local system. DDE creates a direct link to the Project using Explorer/Finder or you can open the project with the IDE Visual Studio Code.
+
+1. Click the `Open in Visual Studio Code` button
+
+2. 
+
+Once the scaffolding has been complete we can start the application.
+
+
 ### <a name="task2.7"></a>Task 2.7: Customize the Application 
 ### <a name="task2.8"></a>Task 2.8: Deploy the Application on Kubernetes
 
