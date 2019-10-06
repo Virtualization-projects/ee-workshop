@@ -12,20 +12,21 @@ Suggested workshop order:
 **System Requirements**
 
 
-  Docker Desktop Enterprise installed on your laptop with internet access to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
- * You will also need a code editor. Instructions here demonstrate the use of [Microsoft Visual Studio Code (vscode)](https://code.visualstudio.com/download), but any code editor should work.
+  You need Docker Desktop Enterprise installed on your laptop or workstation with internet access to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
+ * You will also need a code editor of your choice. Instructions here demonstrate the use of [Microsoft Visual Studio Code (vscode)](https://code.visualstudio.com/download), but any code editor should work.
    * No knowledge of the code syntax is assumed.
    * Some steps demonstrate the use of the [Docker plugin](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.
    * **The Docker Desktop Enterprise download is approximately 1.8 GB so please download and install before the workshop**
 
-**Windows**
-> **Windows 10: Docker Desktop requires Hyper-V features utilizing Windows 10 Pro or Enterprise to successfully install it.**
->   
+**Windows OS Requirements**
+>  
+> * Windows 10 Professional or Enterprices
+>   * Hyper-V features enable. If you want to see how to enable Hyper-V, [check it out over here.](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v). 
 > * [Download Docker Desktop Enterprise for Windows 10](https://docs.docker.com/ee/desktop/admin/install/windows/)
 > * Windows 10 Pro or Enterprise
 
 
-**Mac**
+**Mac OS Requirements**
 >   * [Download Docker Desktop Enterprise for macOS](https://docs.docker.com/ee/desktop/admin/install/mac/)
 > * macOS: Docker Desktop requires macOS 10.12 and newer
 > * Mac Hardware must be a 2010 or newer model
@@ -94,16 +95,16 @@ A Swarm is a group of machines that are running Docker and joined into a cluster
 
 Swarm mode uses managers and workers to run your applications. Managers run the Swarm cluster, making sure nodes can communicate with each other, allocate applications to different nodes, and handle a variety of other tasks in the cluster. Workers are there to provide extra capacity to your applications.
 
-With Docker Desktop Enterprise, you have a single Docker node. Because it is a single node, Swarm mode is not enabled by default, but Swarm mode can be enabled if required to test commands or features which are only available in Swarm mode, such as `docker stack deploy` or `docker service` commands.
+With Docker Desktop Enterprise, you have a single Docker node. Because it is a single node, Swarm mode is not enabled by default, however, Swarm mode can be enabled if required to test commands or features which are only available in Swarm mode. These commands or features include `docker stack deploy` or the `docker service` commands.
 
 In a multi-node clustered environment, Swarm mode uses managers and workers to run your applications. Managers run the swarm cluster, making sure nodes can communicate with each other, allocating applications to different nodes, and handling a variety of other tasks in the cluster. Workers are there to provide the capacity for your applications. If you are completing the [Docker Enterprise workshop](README.md) along with these exercises you will have a remote cluster with one manager and three workers and later tasks will have you push images and deploy applications from your Docker Desktop Enterprise to the remote cluster.
 
 #### <a name="intro3.2"></a>Overview of Kubernetes
 
-Kubernetes is part of Docker Enterprise 3.0 in both Docker Desktop Enterprise and Docker Enterprise referred to as Docker Kubernetes Service or  DKS. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many additional component types within Kubernetes. The Universal Control Plane (UCP) in Docker Enterprise clusters simplifies much of the complexities for using Kubernetes. The Docker platform includes a [fully-comformant Kubernetes Distribution](https://www.cncf.io/certification/software-conformance). We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 2.XX.
+Kubernetes is part of Docker Enterprise 3.0 in both Docker Desktop Enterprise and Docker Enterprise referred to as Docker Kubernetes Service or DKS. Kubernetes deployments tend to be more complex than Docker Swarm, and there are many additional component types within Kubernetes. The Universal Control Plane (UCP) in Docker Enterprise clusters simplifies much of the complexities using Kubernetes. The Docker platform includes a [fully-comformant Kubernetes Distribution](https://www.cncf.io/certification/software-conformance). We'll concentrate on Pods and Load Balancers in this workshop, but there's plenty more supported by UCP 2.XX.
 
 ## <a name="task1"></a>Task 1: Configure Docker Desktop Enterprise
-Docker Desktop Enterprise installation comes pre-configured with administration tools. The admin settings enable administrators to configure Docker Desktop for developer teams. We will explore some of the administration settings in this section.
+Docker Desktop Enterprise installation comes pre-configured with administration tools. The admin settings enable administrators to configure Docker Desktop for developer teams and we'll explore some of the administration settings in this section.
 
 ### <a name="task 1.1"></a>Task 1.1: Launch Docker Desktop Enterprise
 The first time you launch Docker Desktop Enterpirse it will prompt you for a license file. You can install the license file directly through the prompt or manually based on your Operating System
@@ -126,8 +127,9 @@ Install the Docker Desktop Enterprise (DDE) license file at the following locati
 System administrators can configure Docker Desktop Enterprise (DDE) settings, specify and lock configuration parameters to create a standardized development environment based on the developers operating systems.
 
 * Show admin-settings.json (lockable settings)
-  * Windows location: `\%ProgramData%\DockerDesktop\admin-settings.json` which defaults to `C:\ProgramData\DockerDesktop\admin-settings.json` **Must have Administrator privelage to edit this file**
-	* Mac location: `/Library/Application\ Support/Docker/DockerDesktop`
+  * Windows location: `\%ProgramData%\DockerDesktop\admin-settings.json` which defaults to `C:\ProgramData\DockerDesktop\admin-settings.json`.  
+  **NOTE:** You need Administrator privelages to edit this file
+  * Mac location: `/Library/Application\ Support/Docker/DockerDesktop`
 
 The `admin-settings.json` allows the configuration of DDE settings. Each configuration can be configured with a default value and whether this value is locked for users or not. The configurations include:
 
@@ -151,15 +153,18 @@ The `dockerdesktop-admin` tool allows System Administators to manage DDE applica
   * Mac location: `/Applications/Docker.app/Contents/Resources/bin`
   * `sudo ./dockerdesktop-admin --help`
     * `sudo ./dockerdesktop-admin app uninstall` to remove DDE and VPs (do not run!)
-* install a Version Pack with dockerdesktop-admin tool
+* Install a Version Pack with dockerdesktop-admin tool
   * `sudo ./dockerdesktop-admin version-pack install <path to ddvp>`
 	* Note that Desktop needs to be stopped to add a Version Pack
 
 **Windows**
 * Show dockerdesktop-admin tool
-  * Windows location: `??`
-  * **Windows docker-desktop examples**
-
+  * Windows location: `[`*`ApplicationPath`*`]\dockerdesktop-admin.exe`
+* Install a Version Pack with dockerdesktop-admin tool
+  * `dockerdesktop-admin.exe -InstallVersionPack=['path-to-archive']`
+* Version-pack uninstall with dockerdesktop-admin tool
+  * `dockerdesktop-admin.exe -UninstallVersionPack=[version-pack-name|'path-to-archive']`
+  * **NOTE:** You must stop Docker Desktop before installing a version pack.
 
 ### <a name="task1.2"></a>Task 1.3: Enable Kubernetes
 
@@ -172,10 +177,23 @@ Enabling Kubernetes in Docker Desktop only requires a single click.
 3. Check the `Enable Kubernetes` box
 4. Click Apply. This will take a couple minutes depending on the performance of your computer
 
+**Mac**
+
 ![](./images/kube_enable.png)
 
+**Windows**
+
+![](./images/kube_enable_win.png)
+
 5. Run the Kubernetes Cluster creation in the background and will be ready once the Kubernetes status turns green
+
+**Mac**
+
 ![](./images/kube_run_background.png)
+
+**Windows**
+
+![](./images/kube_run_background_win.png)
 
 Congratulations! Docker Desktop Enterprise is now ready to deploy applications to use either Swarm or Kubernetes.
 
@@ -185,11 +203,13 @@ Congratulations! Docker Desktop Enterprise is now ready to deploy applications t
 
 By default, Docker Desktop uses Build.XX. Buildkit is not required for any exercises in this workshop but we will go ahead and enable it so you can see it in action in case you want to explore advanced build actions on your own.
 
-1. Right Click Docker Desktop Enterprise -> Preferences
+1. Right Click `Docker Desktop Enterprise` -> `Settings`
 2. Open the `Deamon` Tab
 3. Switch to the `Advanced Tab` This is the Docker Daemon configuration file `daemon.json` 
 4. Delete the existing configuration
 5. Copy and paste the `daemon.json` configuration below
+
+**Jim** Windows app doesn't have Daemon > advanced tab. Do we need to split this out as a seperate Windows section [marcel]?
 
 ```json
 {
@@ -210,7 +230,7 @@ In this section, we will explore the capabilities of the DDE Application Designe
 
 Next, we will explore the Application Designer and learn how to design a new application. When we create a new application we are provided the choice to use a template which contains preconfigured applications or define a custom applications.
 
-1. Click on Docker Desktop -> `Design new application`
+1. Reight Click on `Docker Desktop` -> `Design new application`
 
 ![](./images/app-design-choose.png)
 
@@ -231,7 +251,7 @@ Customize the default settings of the `Flask/ NGINX / MYSQL application` templat
 ![](./images/customize-application-template.png)
 
 ### <a name="task2.3"></a>Task 2.3: Add a Custom Template Repository
-??
+**Jim** ??
 
 ### <a name="task2.4"></a>Task 2.4: Scaffold the Application Template
 
@@ -239,7 +259,7 @@ The scaffoloding of the template copies the all the necessary Dockerfiles, docke
 
 1. Name the Application
 
-2. Change the location of Scaffolded project
+2. Change the `location` of Scaffolded project, if required.
 
 3. Click `Scaffold`
 
@@ -250,6 +270,8 @@ The scaffoloding of the template copies the all the necessary Dockerfiles, docke
 Once the `Scaffold` has complete we have the option to `Run Application`
 
 1. Click `Run Application`
+
+![](./images/kube_run_launch_app_win.png)
 
 The log output displays `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer.
 
