@@ -57,12 +57,13 @@ Suggested workshop order:
 >     * [Task 2.4: Start the Application](#task2.4)
 >   * [Task 3: Develop an Application with Docker Desktop](#task3)
 >     * [Task 3.1: Add a Custom Template Repository](#task3.1)
->     * [Task 3.2: Scaffold the Application Template](#task3.2)
+>     * [Task 3.2: Choose the New Template](#task3.2)
+>     * [Task 3.3: Scaffold the Application Template](#task3.3)
 >       - Show `template` CLI too
->     * [Task 3.3: Start the Application](#task3.3)
->     * [Task 3.4: Live Code Changes](#task3.4)
->     * [Task 3.5: Customize the Application](#task3.5)
->     * [Task 3.6: Deploy the Application on Kubernetes](#task3.6)
+>     * [Task 3.4: Start the Application](#task3.4)
+>     * [Task 3.5: Live Code Changes](#task3.5)
+>     * [Task 3.6: Customize the Application](#task3.6)
+>     * [Task 3.7: Deploy the Application on Kubernetes](#task3.7)
 >   * [Task XX: Using Docker Assemble](#taskXX)
 
 > * Deploying to Docker Enterprise Clusters
@@ -262,6 +263,8 @@ The scaffoloding of the template copies all the necessary Dockerfiles, docker-co
 
 3. Click `Scaffold`
 
+4. Open `Show Logs` to view the log output from `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer in the stack.
+
 ![](./images/name-application-template.png)
 
 ### <a name="task2.4"></a>Task 2.4: Start the Application
@@ -275,6 +278,8 @@ Once the `Scaffold` has complete we have the option to `Run Application`
 The log output displays `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer.
 
 ## <a name="task3"></a>Task 3: Develop an Application with Docker Desktop
+
+In this section we will add a custom template repository allowing us to import our own custom application templates. Our demo application is a Link Extractor application containing a PHP Frontend and an API written in Python. Next, we will make some live coding changes to the running application, customize the application by upgrading the Docker images, and finally deploy our application to Kubernetes.
 
 ### <a name="task3.1"></a>Task 3.1: Add a Custom Template Repository
 
@@ -305,19 +310,32 @@ Add a new repository, which is shown below the `library` repository as the `cust
     - name: custom-services
       url: https://raw.githubusercontent.com/JimCodified/dde-handsonlab/master/labsetup/appdesignertemplates/library.yaml
 
-### <a name="task3.2"></a>Task 3.2: Scaffold the Application Template
+### <a name="task3.2"></a>Task 3.2: Choose new Library Template
+
+Next, the `custom-services` template will now be avaialble when we open `Application Designer` and `Choose a template`
+
+1. Right Click on `Docker Desktop` -> `Design new application`
+
+2. Select `Choose Template`
+
+3. Choose the `Flask/ Apache application`
+
+![](./images/app_designer_library.png)
+
+
+### <a name="task3.3"></a>Task 3.3: Scaffold the Application Template
 
 The scaffoloding of the template copies all the necessary Dockerfiles, docker-compose, and application specific files locally to DDE. Once all the files have been copied locally, DDE then builds the images and prepares them for use.
 
-1. Name the Application
+1. Name the Application `links-app`
 
-2. Change the `location` of Scaffolded project, if required.
+2. Change the `location` of Scaffolded project, if desired.
 
 3. Click `Scaffold`
 
-![](./images/name-application-template.png)
+4. Open `Show Logs` to view the log output from `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer in the stack.
 
-### <a name="task3.3"></a>Task 3.3: Start the Application
+### <a name="task3.4"></a>Task 3.4: Start the Application
 
 Once the `Scaffold` has complete we have the option to `Run Application`
 
@@ -325,21 +343,65 @@ Once the `Scaffold` has complete we have the option to `Run Application`
 
 ![](./images/kube_run_launch_app_win.png)
 
-The log output displays `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer.
+Inside the `links-app` project we can see the live log output from our application stack. We also have the possability to `Stop` or `Restart` our application stack.
 
-### <a name="task2.6"></a>Task 2.6: Live Code Changes
+2. Open the `links-app` in a browser tab [http://localhost](http://localhost)
+3. Test the `links-app` by providing a full URL `https://www.docker.com`
+4. Click `Extract Links` button 
+5. Let's test the API as well. Open a new Browser tab. Copy and paste `http://localhost:5000/` which returns the usage of the API
+6. Provide a query to the API. Copy and paste `http://localhost:5000/api/https://docker.com` which displayes the same results from the the UI but in `JSON` format.
 
-Next, view the project which was `Scaffold` on to our local system. DDE creates a direct link to the Project using Explorer/Finder or you can open the project with the IDE Visual Studio Code.
+### <a name="task3.5"></a>Task 3.5: Live Code Changes
 
-1. Click the `Open in Visual Studio Code` button
+Now, we will make changes to our running Links application. The `Application Designer` comes with the included feature to launch `Visual Studio Code` (VS Code) directly in the project directory or Open Windows Explorer or Finder on Mac and edit the files directly with another editor. In this example, we will use `Visual Studio Code`
 
-2. 
+1. Click the `Open in Visual Studio Code` which now opens the `links-app` in VS Code.
+2. Navigate and open `www/index.php`
+3. Change the HTML Color on line #61 & #62 from `#082E41` to `#007bff` and save the `index.php`
 
-Once the scaffolding has been complete we can start the application.
+```css
+      div.header {
+        background: #007bff;
+        margin: 0;
+      }
+      div.footer {
+        background: #007bff;
+        margin: 0;
+        padding: 5px;
+      }
+```
+4. Return to your Browser Tab running [http://localhost](http://localhost) and refresh the page. You should now see the `links-app` has been rebranded with Docker colors.
 
+### <a name="task3.6"></a>Task 3.6: Customize the Application 
 
-### <a name="task2.7"></a>Task 2.7: Customize the Application 
-### <a name="task2.8"></a>Task 2.8: Deploy the Application on Kubernetes
+We can also customize the Application Stack. In this task, we will upgrade the `links-app` images to the newest version.
+
+1. Click the `Open in Visual Studio Code` which now opens the `links-app` in VS Code.
+2. Open the `docker-compose.yml` file in the root of the `links-app` directory
+3. Update Docker images for both `api` and `www` services which should match the below
+
+```yaml
+version: "3.6"
+services:
+  api:
+    build: api
+    image: ollypom/ee-templates-api:step4-v1
+    ports:
+    - 5000:5000
+  www:
+    environment:
+    - API_ENDPOINT=http://api:5000/api/
+    image: ollypom/ee-templates-web:step4-v1
+    ports:
+    - 80:80
+    volumes:
+    - ./www/web:/var/www/html
+```
+
+4. Save the `docker-compose.yml` file
+5. Inside `Application Designer` click `Restart` which will rebuild the `links-app` using the updated images.
+
+### <a name="task3.7"></a>Task 3.7: Deploy the Application on Kubernetes
 
 ## <a name="task4"></a>Task 4: Connecting to Docker Enterprise UCP and DTR
 ### <a name="task4.2"></a>Task 4.1: Client Bundles
