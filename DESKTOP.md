@@ -11,12 +11,16 @@ Suggested workshop order:
 
 **System Requirements**
 
+> You will need to have Docker Desktop Enterprise installed on your laptop with internet access in order to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
+> * Windows 10: Docker Desktop requires Hyper-V features in Windows 10 so you will need Windows 10 Pro or Enterprise to successfully install it.
+>   * [Download Docker Desktop Enterprise for Windows 10](https://download.docker.com/win/enterprise/DockerDesktop.msi)
+> * macOS: Docker Desktop requires macOS XX or later
+>   * [Download Docker Desktop Enterprise for macOS](https://docs.docker.com/ee/desktop/admin/configure/mac-admin)
+>  * You will also need a code editor of your choice. Instructions here demonstrate the use of [Microsoft Visual Studio Code (vscode)](https://code.visualstudio.com/download), but any code editor should work.
+>   * No knowledge of the code syntax is assumed.
+>   * Some steps demonstrate the use of the [Docker plugin](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.
 
-  You need Docker Desktop Enterprise installed on your laptop or workstation with internet access to complete this lab. An XX-day evaluation license is included with the download of Docker Desktop Enterprise.
- * You will also need a code editor of your choice. Instructions here demonstrate the use of [Microsoft Visual Studio Code (vscode)](https://code.visualstudio.com/download), but any code editor should work.
-   * No knowledge of the code syntax is assumed.
-   * Some steps demonstrate the use of the [Docker plugin](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) in vscode; many code editors have Docker plugins available that should function similarly. The plugins are not required and the equivalent command will be given to complete the step.
-   * **The Docker Desktop Enterprise download is approximately 1.8 GB so please download and install before the workshop**
+**The Docker Desktop Enterprise download is approximately 1.8 GB so please download and install before the workshop**
 
 **Windows OS Requirements**
 >  
