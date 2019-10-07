@@ -53,14 +53,16 @@ Suggested workshop order:
 >   * [Task 2: Create an Application Template](#task2)
 >     * [Task 2.1: Choose a Template](#task2.1)
 >     * [Task 2.2: Customize the Template Settings](#task2.2)
->     * [Task 2.3: Add a Custom Template Repository](#task2.3)
+>     * [Task 2.3: Scaffold the Application Template](#task2.3)
+>     * [Task 2.4: Start the Application](#task2.4)
 >   * [Task 3: Develop an Application with Docker Desktop](#task3)
->     * [Task 3.1: Scaffold the Application Template](#task3.1)
+>     * [Task 3.1: Add a Custom Template Repository](#task3.1)
+>     * [Task 3.2: Scaffold the Application Template](#task3.2)
 >       - Show `template` CLI too
->     * [Task 3.2: Start the Application](#task3.2)
->     * [Task 3.3: Live Code Changes](#task3.3)
->     * [Task 3.4: Customize the Application](#task3.4)
->     * [Task 3.5: Deploy the Application on Kubernetes](#task3.5)
+>     * [Task 3.3: Start the Application](#task3.3)
+>     * [Task 3.4: Live Code Changes](#task3.4)
+>     * [Task 3.5: Customize the Application](#task3.5)
+>     * [Task 3.6: Deploy the Application on Kubernetes](#task3.6)
 >   * [Task XX: Using Docker Assemble](#taskXX)
 
 > * Deploying to Docker Enterprise Clusters
@@ -250,12 +252,9 @@ Customize the default settings of the `Flask/ NGINX / MYSQL application` templat
 
 ![](./images/customize-application-template.png)
 
-### <a name="task2.3"></a>Task 2.3: Add a Custom Template Repository
-**Jim** ??
+### <a name="task2.3"></a>Task 2.3: Scaffold the Application Template
 
-### <a name="task2.4"></a>Task 2.4: Scaffold the Application Template
-
-The scaffoloding of the template copies the all the necessary Dockerfiles, docker-compose, and application specific files locally to DDE. Once all the files have been copied locally, DDE then builds the images and prepares them for use.
+The scaffoloding of the template copies all the necessary Dockerfiles, docker-compose, and application specific files locally to DDE. Once all the files have been copied locally, DDE then builds the images and prepares them for use.
 
 1. Name the Application
 
@@ -265,7 +264,60 @@ The scaffoloding of the template copies the all the necessary Dockerfiles, docke
 
 ![](./images/name-application-template.png)
 
-### <a name="task2.5"></a>Task 2.5: Start the Application
+### <a name="task2.4"></a>Task 2.4: Start the Application
+
+Once the `Scaffold` has complete we have the option to `Run Application`
+
+1. Click `Run Application`
+
+![](./images/kube_run_launch_app_win.png)
+
+The log output displays `docker-compose` starting the application stack in the foreground allowing us to view all the logs for each contianer.
+
+## <a name="task3"></a>Task 3: Develop an Application with Docker Desktop
+
+### <a name="task3.1"></a>Task 3.1: Add a Custom Template Repository
+
+It is also possible to add a custom template repository to DDE. The `library.yaml` file defines the plugins and application dependencies required for the new template.
+
+The Docker Desktop Enterprise Application Designer is configured with a standard library of Application templates. We will add an additional custom library for this hands on lab. The library configuration is defined in the `preferences.yaml` file. Here we define where the Desktop Designer will fetch the `library.yaml` files from.
+
+Using your favorite text editor edit `preferences.yaml`. The library configuration can be found at:
+ 
+**Mac/Linux**
+
+    /Users/<user>/.docker/application-template/preferences.yaml
+
+**Windows**
+
+    C:\Users\<user>\.docker\application-template\preferences.yaml
+
+
+Add a new repository, which is shown below the `library` repository as the `custom-services` repository with a URL pointing to the DDE Lab GitHub Repo. The file should look like this when you're done:
+
+
+    apiVersion: v1alpha1
+    disableFeedback: true
+    kind: Preferences
+    repositories:
+    - name: library
+      url: https://docker-application-template.s3.amazonaws.com/production/v0.1.5/library.yaml
+    - name: custom-services
+      url: https://raw.githubusercontent.com/JimCodified/dde-handsonlab/master/labsetup/appdesignertemplates/library.yaml
+
+### <a name="task3.2"></a>Task 3.2: Scaffold the Application Template
+
+The scaffoloding of the template copies all the necessary Dockerfiles, docker-compose, and application specific files locally to DDE. Once all the files have been copied locally, DDE then builds the images and prepares them for use.
+
+1. Name the Application
+
+2. Change the `location` of Scaffolded project, if required.
+
+3. Click `Scaffold`
+
+![](./images/name-application-template.png)
+
+### <a name="task3.3"></a>Task 3.3: Start the Application
 
 Once the `Scaffold` has complete we have the option to `Run Application`
 
